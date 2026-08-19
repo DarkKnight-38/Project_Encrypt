@@ -56,7 +56,7 @@ This project strictly adheres to and exceeds the CBSE Class 12 Computer Science 
 
 ## 💻 Tech Stack & Libraries
 
-**Core Language:** Python 3.x  
+**Core Language:** Python 3  
 **External Libraries Required:**
 *   `matplotlib` (For 3D data visualization)
 
