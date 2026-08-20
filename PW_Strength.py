@@ -28,7 +28,7 @@ def strength_test():#Raphael #Complete
         e+='[!] Try adding digits to your password.\n'
 
     # Check for special characters
-    special_characters = "!@#$%^&*()-_=+[{]}\|;:'\",<.>/?"
+    special_characters = "!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"
     if any(char in special_characters for char in password):
         score += 1
     else:
