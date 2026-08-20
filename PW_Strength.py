@@ -46,5 +46,3 @@ def strength_test():#Raphael #Complete
         print("Password strength: Very Weak")
 
     print(e)
-
-strength_test()
