@@ -51,3 +51,4 @@ def register():  # Raphael
 
 
 
+register()
