@@ -4,5 +4,5 @@ def min_decrypt(): #Sasank
 def inter_decrypt(): #Sasank
     pass
 
-def max_decrypt(encrypted_bytes, key_list): #Raphael
+def max_decrypt(): #Raphael
     pass
