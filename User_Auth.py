@@ -60,7 +60,7 @@ def register():  # Raphael
         writer.writerow([username, password, unique_id])
        
     print('[*] User registered successfully!')
-
+    
 
 
 register()
