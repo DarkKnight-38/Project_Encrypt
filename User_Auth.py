@@ -2,8 +2,20 @@ import csv
 import os
 import random
 import pwinput
-def login():#Sasank
-   pass
+def login():#Raphael
+   print("\n--- USER LOGIN ---")
+   username = input('Enter your username: ').strip()
+   password = pwinput.pwinput(prompt='Enter your password: ', mask='*').strip()
+   if username == '' or password == '':
+       print('[!] Username and password cannot be empty. Login aborted.')
+       return None
+   for row in csv.reader(open('user_data.csv', 'r', newline='')):
+       if row and row[0] == username and row[1] == password:
+           print(f"Logging in as {username}...")
+           print('[*] Login successful!')
+           return row[2]
+   print('[!] Invalid username or password. Login failed.')
+
 
 def register():  # Raphael
     print("\n--- USER REGISTRATION ---")
@@ -25,7 +37,8 @@ def register():  # Raphael
                     existing_users.append(row[0])
                    
     if username in existing_users:
-        print('[!] User already exists! Returning to menu...')
+        print('[!] User already exists! Rerouting to login...')
+        login()
         return
 
   
@@ -60,12 +73,9 @@ def register():  # Raphael
         writer.writerow([username, password, unique_id])
        
     print('[*] User registered successfully!')
+    login()
     
-
-
-register()
-
-def logout():#Raphael
+def logout():#Sasank
     pass
 
 def clear_user_data():#Sasank
