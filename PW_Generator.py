@@ -1,2 +1,2 @@
-def generator():#Sasank
+def password_generator():#Sasank
     pass
