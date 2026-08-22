@@ -26,7 +26,7 @@ def main_menu():
         if auth_choice == '1':
             result = User_Auth.register()
             if result is not False and result is not None:
-                UID = result  # <--- CHANGED THIS BACK FROM 'pass'
+                pass  # <--- CHANGED THIS BACK FROM 'pass'
             else:
                 continue
                 

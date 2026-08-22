@@ -1,4 +1,4 @@
-def strength_test():#Raphael #Complete
+def strength_test():#Raphael #Completed
     print("\n--- PASSWORD STRENGTH TEST ---")
     score = 0
     password = input("Enter your password: ")

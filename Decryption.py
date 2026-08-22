@@ -8,7 +8,7 @@ def min_decrypt(): #Sasank
 def inter_decrypt(): #Sasank
     pass
 
-def max_decrypt(txt_file, enc_key_file, current_uid):#Raphael
+def max_decrypt(txt_file, enc_key_file, current_uid):#Raphael #Completed
     if not os.path.exists(txt_file) or not os.path.exists(enc_key_file):
         print("[!] ERROR: Required files are missing.")
         return

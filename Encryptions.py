@@ -7,7 +7,7 @@ def min_encrypt():#Sasank
     pass
 def inter_encrypt():#Sasank
     pass
-def max_encrypt(text,txt_file,enc_key_file,UID):#Raphael
+def max_encrypt(text,txt_file,enc_key_file,UID):#Raphael #Completed
     text_bytes = text.encode('utf-8')
     og_hash = hashlib.sha256(text_bytes).hexdigest()
     keys=[secrets.randbelow(256) for _ in text]
