@@ -1,80 +1,175 @@
-# 🛡️ Codebreaker Security Terminal
+# 🔐 Codebreaker — Security Terminal
 
-A comprehensive, terminal-based cybersecurity suite and cryptography lab built with Python. 
+A terminal-based Python security toolkit combining custom encryption, integrity hashing, user authentication, and password analysis — built as a hands-on exploration of core CS fundamentals (file I/O, data structures, and algorithmic logic).
 
-This project was developed to demonstrate core computer science principles including **Data Structures (Stacks)**, **Binary File Handling**, **Algorithmic Logic**, and **Data Visualization**. It serves as a fully functional security terminal complete with user authentication, encryption engines, and password analysis tools.
+![Python](https://img.shields.io/badge/python-3.x-blue)
+![Status](https://img.shields.io/badge/status-in%20development-yellow)
+![License](https://img.shields.io/badge/license-unspecified-lightgrey)
 
 ---
 
 ## 📋 Table of Contents
-- [Features](#-features)
-- [Syllabus Mapping](#-syllabus-mapping)
-- [Tech Stack & Libraries](#-tech-stack--libraries)
-- [Installation & Setup](#-installation--setup)
-- [Usage](#-usage)
+- [Overview](#-overview)
+- [Feature Status](#-feature-status)
+- [How It Works](#-how-it-works)
+- [Project Structure](#️-project-structure)
+- [Getting Started](#-getting-started)
+- [Quick Start Examples](#-quick-start-examples)
+- [Known Limitations](#️-known-limitations)
+- [Roadmap](#-roadmap)
+- [Contributors](#-contributors)
 
 ---
 
-## 🚀 Features
+## 🧭 Overview
 
-### 1. The Encryption Lab
-A three-tier cryptography engine demonstrating the evolution of data security:
-*   **Caesar Cipher (Basic):** Shift-based alphabetical encryption.
-*   **Vigenère Cipher (Intermediate):** Keyword-based polyalphabetic substitution.
-*   **Bitwise XOR Engine (Maximum Security):** A custom One-Time Pad encryption using the `secrets` module, `bytearray` manipulation, and bitwise XOR (`^`) mathematics.
+Codebreaker is a modular command-line application organized around a few core systems:
 
-### 2. Hashing Protocols
-*   **SHA-256 Hashing:** Simulates one-way data protection for verifying text integrity, utilizing Python's built-in `hashlib`.
+- **Encryption Lab** — a bitwise XOR one-time-pad cipher with SHA-256 integrity verification and per-user watermarking
+- **Authentication** — CSV-backed user registration and login
+- **Password Toolkit** — a rule-based strength analyzer (generator planned)
+- **Session Tools** — action history and data visualization (both planned)
 
-### 3. User Authentication System
-*   Secure Login and Signup system.
-*   Stores user credentials locally using the `pickle` module to write and read `.dat` binary dictionaries.
-
-### 4. Advanced Password Toolkit
-*   **Strength Tester:** Analyzes password length, complexity, and character types to output a mathematical security score (0-100).
-*   **Secure Generator:** Automatically generates complex, high-entropy passwords based on user parameters.
-
-### 5. Data Analytics & Visualization
-*   Logs password testing data (Length, Complexity, Score) to a `.csv` file.
-*   Parses the CSV data to render an interactive **3D Scatter Plot** using `matplotlib`.
-
-### 6. Session Action History (Data Structures)
-*   Implements a **LIFO (Last-In, First-Out) Stack** using Python lists.
-*   Pushes all user actions (e.g., "Encrypted File", "Tested Password") to the stack and pops them for session history viewing.
+The project is under active development — some modules are fully working, others are scaffolded but not yet implemented. The table below reflects the current state honestly so contributors know exactly what's left to build.
 
 ---
 
-## 📚 Syllabus Mapping (Class 12 CS)
+## ✅ Feature Status
 
-This project strictly adheres to and exceeds the CBSE Class 12 Computer Science requirements:
-*   **File Handling:** Text files (`.txt`), Binary files (`pickle` / `.dat`), and CSV files (`.csv`).
-*   **Data Structures:** Implementation of a Stack (Push/Pop operations).
-*   **Data Visualization:** Interactive plotting using `matplotlib.pyplot`.
-*   **Control Flow & Logic:** Advanced string manipulation, `while` loops, and error handling.
-
----
-
-## 💻 Tech Stack & Libraries
-
-**Core Language:** Python 3  
-**External Libraries Required:**
-*   `matplotlib` (For 3D data visualization)
-
-**Built-in Python Modules Used:**
-*   `pickle` (Binary file handling)
-*   `csv` (Data logging)
-*   `hashlib` (SHA-256 generation)
-*   `secrets` (Cryptographically secure random number generation)
-*   `os` (Terminal screen clearing and file system management)
+| Module | Feature | Status |
+|---|---|---|
+| Encryption | Bitwise XOR cipher (`max_encrypt` / `max_decrypt`) | ✅ Complete |
+| Encryption | Caesar cipher (`min_encrypt` / `min_decrypt`) | 🚧 Stub |
+| Encryption | Vigenère cipher (`inter_encrypt` / `inter_decrypt`) | 🚧 Stub |
+| Integrity | SHA-256 hash verification | ✅ Complete |
+| Auth | Registration | ✅ Complete |
+| Auth | Login | ✅ Complete |
+| Auth | Logout | 🚧 Stub |
+| Auth | Clear user data | 🚧 Stub |
+| Password Tools | Strength tester | ✅ Complete |
+| Password Tools | Password generator | 🚧 Stub |
+| Session | Action history (LIFO stack) | 🚧 Stub |
+| Analytics | Matplotlib visualization | 🚧 Stub |
+| UI | Main menu routing | 🚧 Placeholder only |
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ How It Works
 
-1. **Clone or Download the Repository:**
-   Extract the project files into a dedicated folder.
+### 🔒 Encryption Lab
+`max_encrypt()` / `max_decrypt()` implement a one-time-pad-style cipher:
 
-2. **Install Dependencies:**
-   Open your terminal or command prompt and install the required visualization library:
-   ```bash
-   pip install matplotlib
+- Generates a cryptographically secure random key (via `secrets`) for every character in the input
+- XORs each character against its key to produce ciphertext, written to a `.txt` file as hex
+- Stores the keys, a SHA-256 signature of the original text, and the encrypting user's unique ID together in a pickled `.dat` file
+- On decryption, the payload is **watermarked** — only the UID that created the file can decrypt it, and the SHA-256 signature is re-checked afterward to confirm the data wasn't tampered with
+
+### 🔑 Authentication
+User credentials are stored in `Data/UserData/user_data.csv`. On registration, a unique 8-digit ID is generated and passwords are confirmed with up to 3 retry attempts before the flow aborts.
+
+### 📊 Password Strength Tester
+Scores a password from 0–5 based on five criteria: minimum length (8+), uppercase, lowercase, digits, and special characters — then prints targeted suggestions for whichever checks failed.
+
+---
+
+## 🗂️ Project Structure
+
+```
+Codebreaker-Security-Terminal/
+├── Main_UI.py
+├── Functions/
+│   ├── Action_Hist.py      # Session history stack (push/pop)
+│   ├── Decryption.py       # Decryption engines
+│   ├── Encryptions.py      # Encryption engines
+│   ├── Graph.py            # Data visualization
+│   ├── PW_Generator.py     # Password generator
+│   ├── PW_Strength.py      # Password strength tester
+│   └── User_Auth.py        # Login / registration
+├── Data/
+│   └── UserData/
+│       └── user_data.csv
+└── README.md
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.x
+- [`pwinput`](https://pypi.org/project/pwinput/) — required for masked password entry
+- `matplotlib` — required once the visualization module is implemented
+
+### Installation
+
+```bash
+git clone <repo-url>
+cd Codebreaker-Security-Terminal
+pip install pwinput matplotlib
+```
+
+> A `requirements.txt` isn't included yet — worth adding once dependencies are finalized.
+
+### Running
+
+```bash
+python Main_UI.py
+```
+
+> Note: `main_menu()` currently just prints a header and returns — it isn't wired up to route between features yet. See [Known Limitations](#️-known-limitations).
+
+---
+
+## 🧪 Quick Start Examples
+
+Since the main menu isn't fully routed yet, individual modules can be exercised directly:
+
+**Encrypt & decrypt a message:**
+```python
+from Functions.Encryptions import max_encrypt
+from Functions.Decryption import max_decrypt
+
+uid = 12345678
+max_encrypt("Hello World", "cipher.txt", "keys.dat", uid)
+max_decrypt("cipher.txt", "keys.dat", uid)
+```
+
+**Test a password's strength:**
+```python
+from Functions.PW_Strength import strength_test
+strength_test()
+```
+
+**Register and log in a user:**
+```python
+from Functions.User_Auth import register, login
+register()
+login()
+```
+
+---
+
+## ⚠️ Known Limitations
+
+- **Plaintext passwords** — `user_data.csv` currently stores passwords unhashed. Fine for a learning project, but hash (e.g. with `hashlib`) before storing if this is ever exposed beyond local use.
+- **`pickle` deserialization** — `.dat` files are loaded with `pickle.load`, which executes arbitrary code for untrusted input. Only load `.dat` files you've generated yourself.
+- **No menu routing yet** — `Main_UI.main_menu()` is a placeholder; modules must currently be called directly (see examples above).
+
+---
+
+## 🛣️ Roadmap
+
+- [ ] Wire up `main_menu()` to route between all features
+- [ ] Implement Caesar and Vigenère ciphers
+- [ ] Implement password generator
+- [ ] Implement action history stack (push/pop + session log view)
+- [ ] Implement Matplotlib 3D visualization from logged password-test data
+- [ ] Implement logout and clear-user-data
+- [ ] Hash stored passwords instead of storing them in plaintext
+
+---
+
+## 👥 Contributors
+
+- **Sasank**
+- **Raphael**
