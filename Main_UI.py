@@ -10,5 +10,5 @@ import Functions.PW_Strength as PW_Strength
 import Functions.User_Auth as User_Auth
 
 
-def main_menu():
+def main_menu():#test
     print("\n--- MAIN MENU ---")
