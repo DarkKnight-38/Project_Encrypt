@@ -2,9 +2,20 @@ import secrets
 import os
 import hashlib
 import pickle
-
-def min_encrypt():#Sasank
-    pass
+import random
+def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
+    a=''
+    l=[]
+    f=open(encrypted_file,'w')
+    for i in text:
+        k=random.randint(1,25)
+        l.append(k)
+        a+=chr(ord(i)+k)
+    f.write(a)
+    f.close()
+    f=open(encryption_key_file,'wb')
+    pickle.dump([l,uid],f)
+    f.close()
 def inter_encrypt():#Sasank
     pass
 def max_encrypt(text, txt_file, enc_key_file, UID):
