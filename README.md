@@ -4,7 +4,6 @@ A terminal-based Python security toolkit combining custom encryption, integrity 
 
 ![Python](https://img.shields.io/badge/python-3.x-blue)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
-![License](https://img.shields.io/badge/license-unspecified-lightgrey)
 
 ---
 
