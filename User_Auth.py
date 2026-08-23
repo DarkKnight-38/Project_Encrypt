@@ -11,7 +11,7 @@ def login():#Raphael
    if username == '' or password == '':
        print('[!] Username and password cannot be empty. Login aborted.')
        return main_menu()
-   for row in csv.reader(open('..\\data\\UserData\\user_data.csv', 'r', newline='')):
+   for row in csv.reader(open('user_data.csv', 'r', newline='')):
        if row and row[0] == username and row[1] == password:
            print(f"Logging in as {username}...")
            print('[*] Login successful!')
@@ -82,5 +82,3 @@ def logout():#Sasank
 
 def clear_user_data():#Sasank
     pass
-
-register()
