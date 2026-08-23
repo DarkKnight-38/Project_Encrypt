@@ -1,14 +1,14 @@
 # Library Imports
 import sys
 # Local Application Imports
-import Action_Hist
-import Encryptions
-import Decryption
-import Graph
-import PW_Generator
-import PW_Strength
-import User_Auth
+import Functions.Action_Hist as Action_Hist
+import Functions.Encryptions as Encryptions
+import Functions.Decryption as Decryption
+import Functions.Graph as Graph
+import Functions.PW_Generator as PW_Generator
+import Functions.PW_Strength as PW_Strength
+import Functions.User_Auth as User_Auth
 
 
 def main_menu():
-    pass
+    print("\n--- MAIN MENU ---")
