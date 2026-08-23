@@ -76,7 +76,7 @@ def register():  # Raphael
        
     print('[*] User registered successfully!')
 
-    
+
 def logout():#Sasank
     pass
 
