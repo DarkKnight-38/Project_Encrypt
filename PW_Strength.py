@@ -1,40 +1,75 @@
-def strength_test():#Raphael #Completed
-    print("\n--- PASSWORD STRENGTH TEST ---")
+def strength_test():# Raphael #Completed
+    print("--- PASSWORD STRENGTH TEST ---")
+
     score = 0
-    password = input("Enter your password: ")
-    e=''
-    # Check for length
-    if len(password) >= 8:
+    password = input("Enter your password to begin the evaluation: ")
+    e = ''  # This variable will accumulate feedback messages
+
+    # 1. Check for minimum length requirement
+    password_length = len(password)
+    
+    if password_length >= 8:
         score += 1
     else:
-        e+='[!] Try increasing the length of your password to at least 8 characters.\n'
+        e += '[!] Try increasing the length of your password to at least 8 characters.\n'
 
-    # Check for uppercase letters
-    if any(char.isupper() for char in password):
+    # 2. Check for uppercase letters
+    has_upper = False
+    
+    for char in password:
+        if char.isupper():
+            has_upper = True
+            break
+
+    if has_upper == True:
         score += 1
     else:
-        e+='[!]Try adding uppercase letters to your password.\n'
+        e += '[!] Try adding uppercase letters to your password.\n'
 
-    # Check for lowercase letters
-    if any(char.islower() for char in password):
+    # 3. Check for lowercase letters
+    has_lower = False
+    
+    for char in password:
+        if char.islower():
+            has_lower = True
+            break
+
+    if has_lower == True:
         score += 1
     else:
-        e+='[!] Try adding lowercase letters to your password.\n'
+        e += '[!] Try adding lowercase letters to your password.\n'
 
-    # Check for digits
-    if any(char.isdigit() for char in password):
-        score += 1 
+    # 4. Check for numerical digits
+    has_digit = False
+    
+    for char in password:
+        if char.isdigit():
+            has_digit = True
+            break
+
+    if has_digit == True:
+        score += 1
     else:
-        e+='[!] Try adding digits to your password.\n'
+        e += '[!] Try adding digits to your password.\n'
 
-    # Check for special characters
+    # 5. Check for special characters
     special_characters = "!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"
-    if any(char in special_characters for char in password):
+    has_special = False
+    
+    for char in password:
+        if char in special_characters:
+            has_special = True
+            break
+
+    if has_special == True:
         score += 1
     else:
-        e+='[!] Try adding special characters to your password.\n'
+        e += '[!] Try adding special characters to your password.\n'
 
-    # Determine strength level
+    # Determine and display final strength level
+    print("\n--- RESULTS ---")
+    print(f"Final Score: {score} out of 5")
+
     if score == 5:
         print("Password strength: Very Strong")
         print("[*] No changes needed, your password is very strong!")
@@ -45,4 +80,9 @@ def strength_test():#Raphael #Completed
     else:
         print("Password strength: Very Weak")
 
-    print(e)
+    # Print the accumulated suggestions if there are any
+    if e != '':
+        print("\n--- SUGGESTIONS FOR IMPROVEMENT ---")
+        print(e)
+    else:
+        print("\nGreat job creating a secure password!")

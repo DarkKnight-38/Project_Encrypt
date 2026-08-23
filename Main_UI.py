@@ -9,9 +9,7 @@ import User_Auth
 import sys
 
 def main_menu():
-    # -----------------------------------------
     # PHASE 1: AUTHENTICATION LOOP
-    # -----------------------------------------
     UID = None
     
     # Stay in this loop until we get a valid UID
@@ -26,7 +24,7 @@ def main_menu():
         if auth_choice == '1':
             result = User_Auth.register()
             if result is not False and result is not None:
-                pass  # <--- CHANGED THIS BACK FROM 'pass'
+                pass 
             else:
                 continue
                 
@@ -40,17 +38,17 @@ def main_menu():
                 
         elif auth_choice == '3':
             print("Exiting program. Goodbye!")
-            sys.exit() # Completely closes the python script
+            sys.exit() # Completely closes everything
             
         else:
             print("[!] Invalid choice. Please enter 1, 2, or 3.")
 
-    # -----------------------------------------
+
     # PHASE 2: MAIN APPLICATION LOOP
-    # -----------------------------------------
+
     print(f"\n[*] Authentication successful! Loading tools...")
     
-    # Now that we have the UID, run the main tools until they want to exit
+    # Main tools menu
     
     print("\n--- MAIN MENU ---")
     print("1. Password Strength Checker")
@@ -69,7 +67,7 @@ def main_menu():
                 print("[!] You must be logged in to use this.")
                 continue
             print("Loading Password Strength Checker...")
-            PW_Strength.strength_test()
+            #PW_Strength.strength_test()
 
         elif choice == '2':
             print("Loading Password Generator...")
@@ -106,7 +104,7 @@ def main_menu():
 
         elif choice == '6':
             print("Exiting the program. Goodbye!")
-            sys.exit()  # <--- CHANGED FROM 'break' TO COMPLETELY KILL THE SCRIPT
+            sys.exit() 
             
         else:
             print("[!] Invalid choice. Please try again.")

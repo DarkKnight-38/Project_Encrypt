@@ -7,27 +7,56 @@ def min_encrypt():#Sasank
     pass
 def inter_encrypt():#Sasank
     pass
-def max_encrypt(text,txt_file,enc_key_file,UID):#Raphael #Completed
-    text_bytes = text.encode('utf-8')
-    og_hash = hashlib.sha256(text_bytes).hexdigest()
-    keys=[secrets.randbelow(256) for _ in text]
-
-    encrypted_bytes = bytearray([ord(char) ^ key for char, key in zip(text, keys)])
-    hex_ciphertext = encrypted_bytes.hex()
-    with open(txt_file, 'w') as f_txt:
-        f_txt.write(hex_ciphertext)
-
-    security_payload = {
-        'keys': keys,
-        'signature': og_hash,
-        'uniqueid': UID
-    }
-
-    with open(enc_key_file, 'wb') as f_bin:
-        pickle.dump(security_payload, f_bin)
+def max_encrypt(text, txt_file, enc_key_file, UID):
+    encoding_format = 'utf-8'
+    text_bytes = text.encode(encoding_format)
+    
+    hash_generator = hashlib.sha256()
+    hash_generator.update(text_bytes)
+    og_hash = hash_generator.hexdigest()
+    
+    keys = []
+    text_length = len(text)
+    
+    for i in range(text_length):
+        random_value = secrets.randbelow(256)
+        keys.append(random_value)
         
-    print(f"[*] SUCCESS: Data Encrypted.")
-    print(f" > Ciphertext written to : {txt_file}")
-    print(f" > Keys & Hash written to: {enc_key_file}")
-
-
+    encrypted_integers = []
+    index_tracker = 0
+    
+    for char in text:
+        char_code = ord(char)
+        current_key = keys[index_tracker]
+        xored_value = char_code ^ current_key
+        encrypted_integers.append(xored_value)
+        index_tracker += 1
+        
+    encrypted_bytes_array = bytearray(encrypted_integers)
+    hex_formatted_ciphertext = encrypted_bytes_array.hex()
+    
+    text_file_object = open(txt_file, 'w')
+    text_file_object.write(hex_formatted_ciphertext)
+    text_file_object.close()
+    
+    security_payload = dict()
+    
+    security_payload['keys'] = keys
+    security_payload['signature'] = og_hash
+    security_payload['uniqueid'] = UID
+    
+    binary_file_object = open(enc_key_file, 'wb')
+    pickle.dump(security_payload, binary_file_object)
+    binary_file_object.close()
+    
+    print()
+    print("[*] SUCCESS: Data Encrypted.")
+    
+    output_msg_part_1 = " > Ciphertext written to : "
+    final_output_1 = output_msg_part_1 + str(txt_file)
+    print(final_output_1)
+    
+    output_msg_part_2 = " > Keys & Hash written to: "
+    final_output_2 = output_msg_part_2 + str(enc_key_file)
+    print(final_output_2)
+    print()
