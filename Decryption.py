@@ -28,7 +28,7 @@ def max_decrypt(txt_file, enc_key_file, current_uid):#Raphael #Completed
     print(f"[*] Verifying file ownership... (Current UID: {current_uid})")
     if current_uid != saved_uid:
         print(f"\n[!] ACCESS DENIED: File is watermarked to a different UID.")
-        print("    You do not have authorization to decrypt this payload.")
+        print("[!] You do not have authorization to decrypt this file.")
         print("=" * 50)
         return
     
