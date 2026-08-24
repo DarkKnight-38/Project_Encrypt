@@ -2,12 +2,12 @@ import os
 import hashlib
 import pickle
 
-def min_decrypt(text_file,encryption_file,encryption_key_file,uid,): #Sasank
-    f=open('encrypted.txt','r')
+def min_decrypt(text_file,encryption_file,encryption_key_file,uid): #Sasank
+    f=open(encrypted_key_file,'r')
     s=''
     a=f.read()
     for i in a:
-        position=ord(i)-65
+        position=int(ord(i))-65
         new_position=(position-keys[0])%26
         s+=chr(new_position+65)
     f.close()
