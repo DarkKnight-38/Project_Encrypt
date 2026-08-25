@@ -1,5 +1,8 @@
 # Library Imports
 import sys
+import os
+from InquirerPy import inquirer
+
 # Local Application Imports
 import Data.ActionHist_Stack.Action_Hist as Action_Hist
 import Functions.Encryptions as Encryptions
@@ -9,62 +12,63 @@ import Functions.PW_Generator as PW_Generator
 import Functions.PW_Strength as PW_Strength
 import Data.UserData.User_Auth as User_Auth
 
+def clear_screen():
+    """Helper function to keep the terminal looking clean."""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def main_menu():
     # PHASE 1: AUTHENTICATION LOOP
     UID = None
 
     while UID is None:
-        print("\n" + "="*30)
-        print("Welcome to the Password Management System")
-        print("="*30)
-        print("1. Register")
-        print("2. Login")
-        print("3. Exit Program")
-       
-        auth_choice = input("Enter your choice: ")
-       
+        clear_screen()
+        print("\n" + "="*40)
+        print("  Welcome to the Password Management System  ")
+        print("="*40 + "\n")
+        
+        # InquirerPy Select Menu
+        auth_choice = inquirer.select(
+            message="Please select an option:",
+            choices=[
+                {"name": "Register", "value": "1"},
+                {"name": "Login", "value": "2"},
+                {"name": "Exit Program", "value": "3"}
+            ],
+            default="2"
+        ).execute()
+        
         if auth_choice == '1':
             result = User_Auth.register()
             if result is not False and result is not None:
                 pass
-            else:
-                continue
-               
+                
         elif auth_choice == '2':
             CurrentUID = User_Auth.login()
             if CurrentUID is not False and CurrentUID is not None:
                 UID = CurrentUID
-                continue
-            else:
-                continue # Restart auth loop on failure
-               
+                
         elif auth_choice == '3':
             print("Exiting program...")
-            sys.exit() # Completely closes everything
-           
-        else:
-            print("[!] Invalid choice. Please enter 1, 2, or 3.")
+            sys.exit() 
 
 
     # PHASE 2: MAIN APPLICATION LOOP
-
-    print(f"\n[*] Authentication successful! Loading tools...")
-   
-    # Main tools menu
-   
-    print("\n--- MAIN MENU ---")
-    print("1. Password Strength Checker")
-    print("2. Password Generator")
-    print("3. Encryption/Decryption")
-    print("4. Action History")
-    print("5. Graphs")
-    print("6. Logout")
-    print("7. Exit")
-
+    clear_screen()
+    print(f"\n[*] Authentication successful! Loading tools...\n")
+    
     while True:
-       
-        choice = input("Enter your choice: ")
+        choice = inquirer.select(
+            message="--- MAIN MENU --- What would you like to do?",
+            choices=[
+                {"name": "Password Strength Checker", "value": "1"},
+                {"name": "Password Generator", "value": "2"},
+                {"name": "Encryption/Decryption", "value": "3"},
+                {"name": "Action History", "value": "4"},
+                {"name": "Graphs", "value": "5"},
+                {"name": "Logout", "value": "6"},
+                {"name": "Exit", "value": "7"}
+            ]
+        ).execute()
 
         if choice == '1':
             if UID is None:
@@ -78,38 +82,48 @@ def main_menu():
             PW_Generator.password_generator()
 
         elif choice == '3':
-            enc_type = input("Choose encryption type (min/inter/max): ").strip().lower()
+            # Sub-menu for encryption
+            enc_type = inquirer.select(
+                message="Choose encryption level:",
+                choices=[
+                    {"name": "Minimum", "value": "min"},
+                    {"name": "Intermediate", "value": "inter"},
+                    {"name": "Maximum", "value": "max"}
+                ]
+            ).execute()
+            
             if enc_type == 'min':
                 print("Minimum encryption selected.")
-                encrypt_choice = input("Do you want to encrypt a file? (y/n): ")
-                if encrypt_choice.lower() == 'y':
-                    text = input("Enter the text to encrypt: ")
-                    encrypted_file = input("Enter the name of the output .txt file: ")
-                    encryption_key_file = input("Enter the name of the output encryption key file: ")
+                
+                # InquirerPy Confirm (Yes/No prompt)
+                if inquirer.confirm(message="Do you want to encrypt a file?").execute():
+                    # InquirerPy Text Prompts
+                    text = inquirer.text(message="Enter the text to encrypt:").execute()
+                    encrypted_file = inquirer.filepath(message="Enter the output .txt filename:").execute()
+                    encryption_key_file = inquirer.filepath(message="Enter the output encryption key filename:").execute()
                     Encryptions.min_encrypt(encrypted_file, encryption_key_file, text, UID)
-                               
-                decrypt_choice = input("Do you want to decrypt a file? (y/n): ")
-                if decrypt_choice.lower() == 'y':
-                    encrypted_file = input("Enter the name of the .txt file to decrypt: ")
-                    encryption_key_file = input("Enter the name of the encryption key file: ")
+                                
+                if inquirer.confirm(message="Do you want to decrypt a file?").execute():
+                    encrypted_file = inquirer.filepath(message="Enter the .txt filename to decrypt:").execute()
+                    encryption_key_file = inquirer.filepath(message="Enter the encryption key filename:").execute()
                     Decryption.min_decrypt(encrypted_file, encryption_key_file, UID)
+                    
             elif enc_type == 'inter':
                 pass
+                
             elif enc_type == 'max':
                 print("Maximum encryption selected.")
-                encrypt_choice = input("Do you want to encrypt a file? (y/n): ")
-                if encrypt_choice.lower() == 'y':
-                    text = input("Enter the text to encrypt: ")
-                    txt_file = input("Enter the name of the output .txt file: ")
-                    enc_key_file = input("Enter the name of the output encryption key file: ")
+                if inquirer.confirm(message="Do you want to encrypt a file?").execute():
+                    text = inquirer.text(message="Enter the text to encrypt:").execute()
+                    txt_file = inquirer.filepath(message="Enter the output .txt filename:").execute()
+                    enc_key_file = inquirer.filepath(message="Enter the output encryption key filename:").execute()
                     Encryptions.max_encrypt(text, txt_file, enc_key_file, UID)
-                               
-                decrypt_choice = input("Do you want to decrypt a file? (y/n): ")
-                if decrypt_choice.lower() == 'y':
-                    txt_file = input("Enter the name of the .txt file to decrypt: ")
-                    enc_key_file = input("Enter the name of the encryption key file: ")
+                                
+                if inquirer.confirm(message="Do you want to decrypt a file?").execute():
+                    txt_file = inquirer.filepath(message="Enter the .txt filename to decrypt:").execute()
+                    enc_key_file = inquirer.filepath(message="Enter the encryption key filename:").execute()
                     Decryption.max_decrypt(txt_file, enc_key_file, UID)
-               
+                
         elif choice == '4':
             print("Loading Action History...")
             # Action_Hist.your_function_name_here()
@@ -121,19 +135,13 @@ def main_menu():
         elif choice == '6':
             print("Logging out...")
             UID = None
-            main_menu()
+            break # Breaks out of main loop, returning to auth loop in main()
 
         elif choice == '7':
             print("Exiting the program...")
             sys.exit()
-           
-        else:
-            print("[!] Invalid choice. Please try again.")
 
 # Start the program
 if __name__ == "__main__":
-    main_menu()
-
-
-
-
+    while True: # Added an outer loop so logging out fully resets the program
+        main_menu()
