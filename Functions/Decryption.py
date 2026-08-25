@@ -2,16 +2,36 @@ import os
 import hashlib
 import pickle
 
-def min_decrypt(text_file,encryption_file,encryption_key_file,uid): #Sasank
-    f=open(encrypted_key_file,'r')
-    s=''
-    a=f.read()
-    for i in a:
-        position=int(ord(i))-65
-        new_position=(position-keys[0])%26
-        s+=chr(new_position+65)
-    f.close()
-    return s
+def min_decrypt(encryption_file,encryption_key_file,uid): #Sasank
+    if not os.path.exists(encryption_file) or not os.path.exists(encryption_key_file):
+        print("[!] ERROR: Required files are missing.")
+        return
+
+    # 1. Read Ciphertext from .txt file
+    with open(encryption_file, 'r') as f_txt:
+        ciphertext_string = f_txt.read()
+        
+    # 2. Read Keys and UID from Binary .dat file
+    with open(encryption_key_file, 'rb') as f_bin:
+        security_payload = pickle.load(f_bin)
+        
+    keys = security_payload['keys']
+    saved_uid = security_payload['uniqueid']
+
+    print(f"[*] Verifying file ownership... (Current UID: {uid})")
+    if uid != saved_uid:
+        print(f"\n[!] ACCESS DENIED: File is watermarked to a different UID.")
+        print("[!] You do not have authorization to decrypt this file.")
+        print("=" * 50)
+        return
+    
+    # 3. Reverse the Caesar Encryption (Subtraction instead of XOR)
+    decrypted_chars = [chr(ord(char) - key) for char, key in zip(ciphertext_string, keys)]
+    decrypted_text = "".join(decrypted_chars)
+    
+    # 4. Output Decrypted Payload (No hash verification in min_encrypt to check against)
+    print("[*] DECRYPTION COMPLETE. (Min Encryption Mode)")
+    print(f"\n--- DECRYPTED PAYLOAD ---\n{decrypted_text}\n-------------------------")
     
 def inter_decrypt(): #Sasank
     pass

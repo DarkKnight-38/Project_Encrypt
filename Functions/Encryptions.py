@@ -4,18 +4,39 @@ import hashlib
 import pickle
 import random
 def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
-    a=''
-    l=[]
-    f=open(encrypted_file,'w')
-    for i in text:
-        k=random.randint(1,25)
-        l.append(k)
-        a+=chr(ord(i)+k)
-    f.write(a)
-    f.close()
-    f=open(encryption_key_file,'wb')
-    pickle.dump([l,uid],f)
-    f.close()
+    keys=[]
+    encrypted_text=""
+    text_length=len(text)
+    if os.path.exists(encrypted_file):
+        print(f"[!] WARNING: The file '{encrypted_file}' already exists and will be overwritten.")
+    if os.path.exists(encryption_key_file):
+        print(f"[!] WARNING: The file '{encryption_key_file}' already exists and will be overwritten.")
+    for i in range(text_length):
+        random_shift=random.randint(-20,20)
+        keys.append(random_shift)
+
+        char_code=ord(text[i])
+        shifted_code=char_code+random_shift
+        encrypted_text+=chr(shifted_code)
+
+    with open (encrypted_file,'w') as f_txt:
+        f_txt.write(encrypted_text)
+
+    with open (encryption_key_file,'wb') as f_bin:
+        payload={'keys':keys,'uniqueid':uid}
+        pickle.dump(payload,f_bin)
+
+    print()
+    print("[*] SUCCESS: Data Encrypted.")
+    output_msg_part_1 = " > Ciphertext written to : "
+    final_output_1 = output_msg_part_1 + str(encrypted_file)
+    print(final_output_1)
+    
+    output_msg_part_2 = " > Keys & UID written to : "
+    final_output_2 = output_msg_part_2 + str(encryption_key_file)
+    print(final_output_2) 
+    print()
+
 def inter_encrypt():#Sasank
     pass
 def max_encrypt(text, txt_file, enc_key_file, UID):
@@ -28,7 +49,11 @@ def max_encrypt(text, txt_file, enc_key_file, UID):
     
     keys = []
     text_length = len(text)
-    
+
+    if os.path.exists(txt_file):
+        print(f"[!] WARNING: The file '{txt_file}' already exists and will be overwritten.")
+    if os.path.exists(enc_key_file):
+        print(f"[!] WARNGING: The file '{enc_key_file}' already exists and will be overwritten.")
     for i in range(text_length):
         random_value = secrets.randbelow(256)
         keys.append(random_value)

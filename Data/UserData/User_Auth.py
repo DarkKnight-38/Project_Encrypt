@@ -11,7 +11,7 @@ def login():#Raphael
    if username == '' or password == '':
        print('[!] Username and password cannot be empty. Login aborted.')
        return main_menu()
-   for row in csv.reader(open('user_data.csv', 'r', newline='')):
+   for row in csv.reader(open('Data\\UserData\\user_data.csv', 'r', newline='')):
        if row and row[0] == username and row[1] == password:
            print(f"Logging in as {username}...")
            print('[*] Login successful!')
@@ -32,8 +32,8 @@ def register():  # Raphael
         return
 
     existing_users = []
-    if os.path.exists('user_data.csv'):
-        with open('user_data.csv', 'r', newline='') as g:
+    if os.path.exists('Data\\UserData\\user_data.csv'):
+        with open('Data\\UserData\\user_data.csv', 'r', newline='') as g:
             data = csv.reader(g)
             for row in data:
                 if row:  # Ensure the row isn't blank
@@ -70,15 +70,11 @@ def register():  # Raphael
             break
     
   
-    with open('user_data.csv', 'a', newline='') as f:
+    with open('Data\\UserData\\user_data.csv', 'a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([username, password, unique_id])
        
     print('[*] User registered successfully!')
-
-
-def logout():#Sasank
-    pass
 
 def clear_user_data():#Sasank
     pass

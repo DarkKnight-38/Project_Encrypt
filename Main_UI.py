@@ -1,13 +1,13 @@
 # Library Imports
 import sys
 # Local Application Imports
-import Action_Hist
-import Encryptions
-import Decryption
-import Graph
-import PW_Generator
-import PW_Strength
-import User_Auth
+import Data.ActionHist_Stack.Action_Hist as Action_Hist
+import Functions.Encryptions as Encryptions
+import Functions.Decryption as Decryption
+import Functions.Graph as Graph
+import Functions.PW_Generator as PW_Generator
+import Functions.PW_Strength as PW_Strength
+import Data.UserData.User_Auth as User_Auth
 
 
 def main_menu():
@@ -71,7 +71,7 @@ def main_menu():
                 print("[!] You must be logged in to use this.")
                 continue
             print("Loading Password Strength Checker...")
-            #PW_Strength.strength_test()
+            PW_Strength.strength_test()
 
         elif choice == '2':
             print("Loading Password Generator...")
@@ -80,7 +80,19 @@ def main_menu():
         elif choice == '3':
             enc_type = input("Choose encryption type (min/inter/max): ").strip().lower()
             if enc_type == 'min':
-                pass
+                print("Minimum encryption selected.")
+                encrypt_choice = input("Do you want to encrypt a file? (y/n): ")
+                if encrypt_choice.lower() == 'y':
+                    text = input("Enter the text to encrypt: ")
+                    encrypted_file = input("Enter the name of the output .txt file: ")
+                    encryption_key_file = input("Enter the name of the output encryption key file: ")
+                    Encryptions.min_encrypt(encrypted_file, encryption_key_file, text, UID)
+                               
+                decrypt_choice = input("Do you want to decrypt a file? (y/n): ")
+                if decrypt_choice.lower() == 'y':
+                    encrypted_file = input("Enter the name of the .txt file to decrypt: ")
+                    encryption_key_file = input("Enter the name of the encryption key file: ")
+                    Decryption.min_decrypt(encrypted_file, encryption_key_file, UID)
             elif enc_type == 'inter':
                 pass
             elif enc_type == 'max':
