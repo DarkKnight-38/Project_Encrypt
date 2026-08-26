@@ -12,16 +12,12 @@ import Functions.PW_Generator as PW_Generator
 import Functions.PW_Strength as PW_Strength
 import Data.UserData.User_Auth as User_Auth
 
-def clear_screen():
-    """Helper function to keep the terminal looking clean."""
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 def main_menu():
     # PHASE 1: AUTHENTICATION LOOP
     UID = None
 
     while UID is None:
-        clear_screen()
         print("\n" + "="*40)
         print("  Welcome to the Password Management System  ")
         print("="*40 + "\n")
@@ -53,8 +49,7 @@ def main_menu():
 
 
     # PHASE 2: MAIN APPLICATION LOOP
-    clear_screen()
-    print(f"\n[*] Authentication successful! Loading tools...\n")
+    print(f"\n[*] Loading tools...\n")
     
     while True:
         choice = inquirer.select(

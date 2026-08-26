@@ -8,7 +8,7 @@ def min_decrypt(encryption_file,encryption_key_file,uid): #Sasank
         return
 
     # 1. Read Ciphertext from .txt file
-    with open(encryption_file, 'r') as f_txt:
+    with open(encryption_file, 'r', encoding='utf-8') as f_txt:
         ciphertext_string = f_txt.read()
         
     # 2. Read Keys and UID from Binary .dat file

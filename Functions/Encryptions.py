@@ -19,7 +19,7 @@ def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
         shifted_code=char_code+random_shift
         encrypted_text+=chr(shifted_code)
 
-    with open (encrypted_file,'w') as f_txt:
+    with open (encrypted_file,'w', encoding='utf-8') as f_txt:
         f_txt.write(encrypted_text)
 
     with open (encryption_key_file,'wb') as f_bin:
