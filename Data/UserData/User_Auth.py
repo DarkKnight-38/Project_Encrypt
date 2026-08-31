@@ -52,14 +52,9 @@ def register():  # Raphael
     attempts = 3
     re_password = pwinput.pwinput(prompt='Enter the password again: ', mask='*').strip()
    
-    while password != re_password and attempts > 1:
-        attempts -= 1
-        print(f'[!] Passwords do not match. You have {attempts} attempts left.')
-        re_password = pwinput.pwinput(prompt='Re-enter the password: ', mask='*').strip()
-
  
     if password != re_password:
-        print('[!] Maximum attempts reached. Registration failed. Please start over.')
+        print('[!] Re-Entered password is wrong. Registration failed. Please start over.')
         return main_menu()
 
     existing_ids = []

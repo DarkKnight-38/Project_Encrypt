@@ -2,6 +2,7 @@
 import sys
 import os
 from InquirerPy import inquirer
+from rich import print
 
 # Local Application Imports
 import Data.ActionHist_Stack.Action_Hist as Action_Hist
@@ -19,7 +20,7 @@ def main_menu():
 
     while UID is None:
         print("\n" + "="*40)
-        print("  Welcome to the Password Management System  ")
+        print("  [red]Welcome to the Password Management System[/red]  ")
         print("="*40 + "\n")
         
         # InquirerPy Select Menu

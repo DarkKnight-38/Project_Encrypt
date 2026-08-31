@@ -36,17 +36,19 @@ def min_decrypt(encryption_file,encryption_key_file,uid): #Sasank
 def inter_decrypt(): #Sasank
     pass
 
-def max_decrypt(txt_file, enc_key_file, current_uid):#Raphael #Completed
-    if not os.path.exists(txt_file) or not os.path.exists(enc_key_file):
+def max_decrypt(encrypted_file, encryption_key_file, current_uid):#Raphael #Completed
+    encrypted_file=str(encrypted_file)+'.txt'
+    encryption_key_file=str(encryption_key_file)+'.dat'
+    if not os.path.exists(encrypted_file) or not os.path.exists(encryption_key_file):
         print("[!] ERROR: Required files are missing.")
         return
 
     # 1. Read Ciphertext from .txt file
-    with open(txt_file, 'r') as f_txt:
+    with open(encrypted_file, 'r') as f_txt:
         hex_ciphertext = f_txt.read()
         
     # 2. Read Keys and Signature from Binary .dat file
-    with open(enc_key_file, 'rb') as f_bin:
+    with open(encryption_key_file, 'rb') as f_bin:
         security_payload = pickle.load(f_bin)
         
     keys = security_payload['keys']
