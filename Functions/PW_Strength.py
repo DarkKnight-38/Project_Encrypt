@@ -1,5 +1,8 @@
+from Functions.Action_Hist import push_hist
+
 def strength_test():# Raphael #Completed
     print("--- PASSWORD STRENGTH TEST ---")
+    push_hist('[*] Password strength test started.')
 
     score = 0
     password = input("Enter your password to begin the evaluation: ")
@@ -73,12 +76,18 @@ def strength_test():# Raphael #Completed
     if score == 5:
         print("Password strength: Very Strong")
         print("[*] No changes needed, your password is very strong!")
+        strength_label = "Very Strong"
     elif score == 4 or score == 3:
         print("Password strength: Strong")
+        strength_label = "Strong"
     elif score == 2:
         print("Password strength: Weak")
+        strength_label = "Weak"
     else:
         print("Password strength: Very Weak")
+        strength_label = "Very Weak"
+
+    push_hist(f'[*] Password strength test completed. Score: {score}/5 ({strength_label}).')
 
     # Print the accumulated suggestions if there are any
     if e != '':

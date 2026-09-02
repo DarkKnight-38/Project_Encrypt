@@ -1,12 +1,14 @@
 import os
 import hashlib
 import pickle
+from Functions.Action_Hist import push_hist
 
 def min_decrypt(encrypted_file,encryption_key_file,uid): #Sasank
     encrypted_file=str(encrypted_file)+'.txt'
     encryption_key_file=str(encryption_key_file)+'.dat'
     if not os.path.exists(encrypted_file) or not os.path.exists(encryption_key_file):
         print("[!] ERROR: Required files are missing.")
+        push_hist(f'[!] Minimum decryption failed: missing files ({encrypted_file}, {encryption_key_file}).')
         return
 
     # 1. Read Ciphertext from .txt file
@@ -25,6 +27,7 @@ def min_decrypt(encrypted_file,encryption_key_file,uid): #Sasank
         print(f"\n[!] ACCESS DENIED: File is watermarked to a different UID.")
         print("[!] You do not have authorization to decrypt this file.")
         print("=" * 50)
+        push_hist(f'[!] Minimum decryption denied: UID {uid} does not match file owner {saved_uid}.')
         return
     
     # 3. Reverse the Caesar Encryption (Subtraction instead of XOR)
@@ -34,8 +37,10 @@ def min_decrypt(encrypted_file,encryption_key_file,uid): #Sasank
     # 4. Output Decrypted Payload (No hash verification in min_encrypt to check against)
     print("[*] DECRYPTION COMPLETE. (Min Encryption Mode)")
     print(f"\n--- DECRYPTED PAYLOAD ---\n{decrypted_text}\n-------------------------")
+    push_hist(f'[*] Minimum decryption completed for {encrypted_file} (UID: {uid}).')
     
 def inter_decrypt(): #Sasank
+    push_hist('[*] Intermediate decryption was called.')
     pass
 
 def max_decrypt(encrypted_file, encryption_key_file, current_uid):#Raphael #Completed
@@ -43,6 +48,7 @@ def max_decrypt(encrypted_file, encryption_key_file, current_uid):#Raphael #Comp
     encryption_key_file=str(encryption_key_file)+'.dat'
     if not os.path.exists(encrypted_file) or not os.path.exists(encryption_key_file):
         print("[!] ERROR: Required files are missing.")
+        push_hist(f'[!] Maximum decryption failed: missing files ({encrypted_file}, {encryption_key_file}).')
         return
 
     # 1. Read Ciphertext from .txt file
@@ -62,6 +68,7 @@ def max_decrypt(encrypted_file, encryption_key_file, current_uid):#Raphael #Comp
         print(f"\n[!] ACCESS DENIED: File is watermarked to a different UID.")
         print("[!] You do not have authorization to decrypt this file.")
         print("=" * 50)
+        push_hist(f'[!] Maximum decryption denied: UID {current_uid} does not match file owner {saved_uid}.')
         return
     
     # 3. Reverse the XOR Encryption
@@ -78,5 +85,7 @@ def max_decrypt(encrypted_file, encryption_key_file, current_uid):#Raphael #Comp
     if new_hash == saved_signature:
         print("\n[✓] INTEGRITY VERIFIED: Hashes match perfectly. Data is authentic.")
         print(f"\n--- DECRYPTED PAYLOAD ---\n{decrypted_text}\n-------------------------")
+        push_hist(f'[*] Maximum decryption completed and integrity verified for {encrypted_file} (UID: {current_uid}).')
     else:
         print("\n[!] CRITICAL WARNING: Hashes do not match. The file was tampered with!")
+        push_hist(f'[!] Maximum decryption completed but integrity check failed for {encrypted_file} (UID: {current_uid}).')

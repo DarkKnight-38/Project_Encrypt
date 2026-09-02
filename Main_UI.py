@@ -46,6 +46,7 @@ def main_menu():
                 
         elif auth_choice == '3':
             print("Exiting program...")
+            Action_Hist.push_hist('[*] Program exited from authentication menu.')
             sys.exit() 
 
 
@@ -71,10 +72,12 @@ def main_menu():
                 print("[!] You must be logged in to use this.")
                 continue
             print("Loading Password Strength Checker...")
+            Action_Hist.push_hist('[*] Opened Password Strength Checker.')
             PW_Strength.strength_test()
 
         elif choice == '2':
             print("Loading Password Generator...")
+            Action_Hist.push_hist('[*] Opened Password Generator.')
             PW_Generator.password_generator()
 
         elif choice == '3':
@@ -90,6 +93,7 @@ def main_menu():
             
             if enc_type == 'min':
                 print("Minimum encryption selected.")
+                Action_Hist.push_hist('[*] Selected minimum encryption/decryption.')
                 
                 # InquirerPy Confirm (Yes/No prompt)
                 if inquirer.confirm(message="Do you want to encrypt a file?").execute():
@@ -105,10 +109,12 @@ def main_menu():
                     Decryption.min_decrypt(encrypted_file, encryption_key_file, UID)
                     
             elif enc_type == 'inter':
+                Action_Hist.push_hist('[*] Selected intermediate encryption/decryption.')
                 pass
                 
             elif enc_type == 'max':
                 print("Maximum encryption selected.")
+                Action_Hist.push_hist('[*] Selected maximum encryption/decryption.')
                 if inquirer.confirm(message="Do you want to encrypt a file?").execute():
                     text = inquirer.text(message="Enter the text to encrypt:").execute()
                     txt_file = inquirer.filepath(message="Enter the output .txt filename:").execute()
@@ -122,19 +128,23 @@ def main_menu():
                 
         elif choice == '4':
             print("Loading Action History...")
-            # Action_Hist.your_function_name_here()
+            Action_Hist.push_hist('[*] Opened Action History.')
+            Action_Hist.pull_hist()
 
         elif choice == '5':
             print("Loading Graphs...")
+            Action_Hist.push_hist('[*] Opened Graphs.')
             # Graph.your_function_name_here()
 
         elif choice == '6':
             print("Logging out...")
+            Action_Hist.push_hist(f'[*] User logged out (UID: {UID}).')
             UID = None
             break # Breaks out of main loop, returning to auth loop in main()
 
         elif choice == '7':
             print("Exiting the program...")
+            Action_Hist.push_hist('[*] Program exited from main menu.')
             sys.exit()
 
 # Start the program

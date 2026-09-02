@@ -3,6 +3,8 @@ import os
 import hashlib
 import pickle
 import random
+from Functions.Action_Hist import push_hist
+
 def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
     encrypted_file=str(encrypted_file)+'.txt'
     encryption_key_file=str(encryption_key_file)+'.dat'
@@ -15,6 +17,7 @@ def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
         print(f"[!] WARNING: The file '{encryption_key_file}' already exists and will be overwritten.")
     if encrypted_file=='' or encryption_key_file=='':
         print(f"[!] WARNING: File name cannot be empty")
+        push_hist('[!] Minimum encryption aborted: file name was empty.')
         return
     for i in range(text_length):
         random_shift=random.randint(-20,20)
@@ -41,8 +44,10 @@ def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
     final_output_2 = output_msg_part_2 + str(encryption_key_file)
     print(final_output_2) 
     print()
+    push_hist(f'[*] Minimum encryption completed. Ciphertext: {encrypted_file}, key file: {encryption_key_file} (UID: {uid}).')
 
 def inter_encrypt():#Sasank
+    push_hist('[*] Intermediate encryption was called.')
     pass
 def max_encrypt(text, encrypted_file, encryption_key_file, UID):
     encrypted_file=str(encrypted_file)+'.txt'
@@ -64,6 +69,7 @@ def max_encrypt(text, encrypted_file, encryption_key_file, UID):
         print(f"[!] WARNGING: The file '{encryption_key_file}' already exists and will be overwritten.")
     if encrypted_file=='' or encryption_key_file=='':
         print(f"[!] WARNING: File name cannot be empty")
+        push_hist('[!] Maximum encryption aborted: file name was empty.')
         return
     for i in range(text_length):
         random_value = secrets.randbelow(256)
@@ -107,3 +113,4 @@ def max_encrypt(text, encrypted_file, encryption_key_file, UID):
     final_output_2 = output_msg_part_2 + str(encryption_key_file)
     print(final_output_2)
     print()
+    push_hist(f'[*] Maximum encryption completed. Ciphertext: {encrypted_file}, key file: {encryption_key_file} (UID: {UID}).')

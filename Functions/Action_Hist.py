@@ -1,7 +1,8 @@
 history=[]
 
 def pull_hist():#Sasank
-    pass
+    for i in history:
+        print(i)
 
 def push_hist(message):#Raphael
     history.append(message)
