@@ -1,4 +1,4 @@
-# 🔐 Codebreaker — Security Suite
+# 🔐 VantaCrypt — Security Suite
 
 > **A modular, terminal-based Python security suite for encryption, password security, authentication, analytics, and more.**
 
@@ -6,7 +6,7 @@
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 ![Platform](https://img.shields.io/badge/Platform-Terminal-lightgrey)
 
-Codebreaker is a Python-based security toolkit designed to bring multiple security utilities together under one terminal application.
+VantaCrypt is a Python-based security toolkit designed to bring multiple security utilities together under one terminal application.
 
 The project started as an exploration of encryption and authentication algorithms and is gradually evolving into a broader **personal security suite** containing encryption tools, password utilities, account management, activity tracking, data visualization, and other security-focused features.
 
@@ -18,7 +18,7 @@ The project started as an exploration of encryption and authentication algorithm
 
 ### 🔒 Encryption
 
-Codebreaker currently includes custom encryption and decryption systems.
+VantaCrypt currently includes custom encryption and decryption systems.
 
 - **XOR-based encryption**
 - SHA-256 integrity verification
@@ -94,7 +94,7 @@ Planned functionality:
 
 ### 📊 Graph & Analytics — Coming Soon
 
-Codebreaker will include data visualization and analytics for security-related information.
+VantaCryptwill include data visualization and analytics for security-related information.
 
 Planned functionality:
 
@@ -131,10 +131,10 @@ Example:
 
 ## 🧩 Planned Architecture
 
-Codebreaker is designed to remain modular so that individual security systems can be developed independently.
+VantaCrypt is designed to remain modular so that individual security systems can be developed independently.
 
 ```text
-Codebreaker
+VantaCrypt
 │
 ├── 🔒 Encryption
 │   ├── XOR Encryption
@@ -187,7 +187,7 @@ Codebreaker
 
 ## 🛠️ Technologies
 
-Codebreaker is built primarily with Python and focuses on implementing security concepts using Python's standard libraries and selected third-party modules.
+VantaCrypt is built primarily with Python and focuses on implementing security concepts using Python's standard libraries and selected third-party modules.
 
 ### Core
 
@@ -294,46 +294,10 @@ max_decrypt(
 
 ---
 
-## 🛣️ Roadmap
-
-### Phase 1 — Core Security
-
-- [x] XOR encryption
-- [x] SHA-256 integrity verification
-- [x] User registration
-- [x] User authentication
-- [x] Password strength analysis
-
-### Phase 2 — Security Utilities
-
-- [ ] Password generator
-- [ ] Password manager
-- [ ] Caesar cipher
-- [ ] Vigenère cipher
-- [ ] Improved encryption/decryption workflow
-
-### Phase 3 — Monitoring & Analytics
-
-- [ ] Action history
-- [ ] Security activity logging
-- [ ] Password statistics
-- [ ] Graphs and visualization
-- [ ] Security dashboard
-
-### Phase 4 — Hardening
-
-- [ ] Secure password hashing
-- [ ] Improved key management
-- [ ] Better data protection
-- [ ] Input validation
-- [ ] Error handling
-- [ ] Security audit
-
----
 
 ## ⚠️ Security Notice
 
-Codebreaker is primarily a **learning and development project**.
+VantaCrypt is primarily a **learning and development project**.
 
 Some components currently use approaches that are not appropriate for production security systems. In particular:
 
@@ -348,7 +312,7 @@ Do **not** use the current development version to protect highly sensitive or cr
 
 ## 🎯 Project Goals
 
-The long-term goal of Codebreaker is to turn a collection of individual Python security experiments into a unified security toolkit.
+The long-term goal of VantaCrypt is to turn a collection of individual Python security experiments into a unified security toolkit.
 
 The project aims to explore:
 
@@ -373,7 +337,7 @@ The project aims to explore:
 
 ## 📌 Status
 
-**Codebreaker is actively being developed.**
+**VantaCrypt is actively being developed.**
 
 New security utilities, management tools, analytics features, and improvements are planned for future releases.
 
