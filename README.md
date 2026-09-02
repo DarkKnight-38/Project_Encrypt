@@ -173,12 +173,12 @@ VantaCrypt
 | User Registration | ✅ Complete |
 | User Login | ✅ Complete |
 | Password Strength Tester | ✅ Complete |
+| Caesar Cipher | ✅ Complete |
 | Main Menu | 🚧 In Development |
-| Caesar Cipher | 🚧 Planned |
+| Action History | 🚧 In Development |
 | Vigenère Cipher | 🚧 Planned |
 | Password Generator | 🚧 Planned |
 | Password Manager | 🚧 Planned |
-| Action History | 🚧 Planned |
 | Graph & Analytics | 🚧 Planned |
 | Logout | 🚧 Planned |
 | User Data Management | 🚧 Planned |
