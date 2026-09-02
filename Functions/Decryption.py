@@ -2,13 +2,15 @@ import os
 import hashlib
 import pickle
 
-def min_decrypt(encryption_file,encryption_key_file,uid): #Sasank
-    if not os.path.exists(encryption_file) or not os.path.exists(encryption_key_file):
+def min_decrypt(encrypted_file,encryption_key_file,uid): #Sasank
+    encrypted_file=str(encrypted_file)+'.txt'
+    encryption_key_file=str(encryption_key_file)+'.dat'
+    if not os.path.exists(encrypted_file) or not os.path.exists(encryption_key_file):
         print("[!] ERROR: Required files are missing.")
         return
 
     # 1. Read Ciphertext from .txt file
-    with open(encryption_file, 'r', encoding='utf-8') as f_txt:
+    with open(encrypted_file, 'r', encoding='utf-8') as f_txt:
         ciphertext_string = f_txt.read()
         
     # 2. Read Keys and UID from Binary .dat file

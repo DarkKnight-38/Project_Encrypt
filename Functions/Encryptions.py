@@ -4,6 +4,8 @@ import hashlib
 import pickle
 import random
 def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
+    encrypted_file=str(encrypted_file)+'.txt'
+    encryption_key_file=str(encryption_key_file)+'.dat'
     keys=[]
     encrypted_text=""
     text_length=len(text)

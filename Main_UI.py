@@ -19,9 +19,9 @@ def main_menu():
     UID = None
 
     while UID is None:
-        print("\n" + "="*40)
+        print("\n" + "="*45)
         print("  [red]Welcome to the Password Management System[/red]  ")
-        print("="*40 + "\n")
+        print("="*45 + "\n")
         
         # InquirerPy Select Menu
         auth_choice = inquirer.select(
