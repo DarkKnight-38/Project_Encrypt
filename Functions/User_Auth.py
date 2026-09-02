@@ -2,7 +2,6 @@ import csv
 import os
 import random
 import pwinput
-from Functions.Action_Hist import push_hist
 
 def login():#Raphael
    from Main_UI import main_menu
@@ -11,16 +10,13 @@ def login():#Raphael
    password = pwinput.pwinput(prompt='Enter your password: ', mask='*').strip()
    if username == '' or password == '':
        print('[!] Username and password cannot be empty. Login aborted.')
-       push_hist('[!] Login aborted: username or password was empty.')
        return main_menu()
    for row in csv.reader(open('Data\\UserData\\user_data.csv', 'r', newline='')):
        if row and row[0] == username and row[1] == password:
            print(f"Logging in as {username}...")
            print('[*] Login successful!')
-           push_hist(f'[*] User "{username}" logged in successfully (UID: {row[2]}).')
            return row[2]
    print('[!] Invalid username or password. Login failed.')
-   push_hist(f'[!] Login failed for username "{username}".')
    return main_menu()
 
 
@@ -30,11 +26,9 @@ def register():  # Raphael
     username = input('Enter a username: ').strip()
     if username == '':
         print('[!] Username cannot be empty. Registration aborted.')
-        push_hist('[!] Registration aborted: username was empty.')
         return
     elif username.lower() == 'username':
         print('[!] "username" is not allowed as a username. Registration aborted.')
-        push_hist('[!] Registration aborted: reserved username "username" was used.')
         return
 
     existing_users = []
@@ -47,14 +41,12 @@ def register():  # Raphael
                    
     if username in existing_users:
         print('[!] User already exists! Rerouting to main menu...')
-        push_hist(f'[!] Registration failed: username "{username}" already exists.')
         return main_menu()
 
   
     password = pwinput.pwinput(prompt='Enter a password: ', mask='*').strip()
     if password == '':
         print('[!] Password cannot be empty. Registration aborted.')
-        push_hist(f'[!] Registration aborted for "{username}": password was empty.')
         return main_menu()
 
     attempts = 3
@@ -63,7 +55,6 @@ def register():  # Raphael
  
     if password != re_password:
         print('[!] Re-Entered password is wrong. Registration failed. Please start over.')
-        push_hist(f'[!] Registration failed for "{username}": passwords did not match.')
         return main_menu()
 
     existing_ids = []
@@ -79,8 +70,6 @@ def register():  # Raphael
         writer.writerow([username, password, unique_id])
        
     print('[*] User registered successfully!')
-    push_hist(f'[*] User "{username}" registered successfully (UID: {unique_id}).')
 
 def clear_user_data():#Sasank
-    push_hist('[*] clear_user_data() was called.')
     pass

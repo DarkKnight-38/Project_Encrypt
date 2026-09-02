@@ -1,10 +1,7 @@
-# Library Imports
 import sys
-import os
 from InquirerPy import inquirer
 from rich import print
 
-# Local Application Imports
 import Functions.Action_Hist as Action_Hist
 import Functions.Encryptions as Encryptions
 import Functions.Decryption as Decryption
@@ -15,7 +12,6 @@ import Functions.User_Auth as User_Auth
 
 
 def main_menu():
-    # PHASE 1: AUTHENTICATION LOOP
     UID = None
 
     while UID is None:
@@ -23,7 +19,6 @@ def main_menu():
         print("  [red]Welcome to the Password Management System[/red]  ")
         print("="*45 + "\n")
         
-        # InquirerPy Select Menu
         auth_choice = inquirer.select(
             message="Please select an option:",
             choices=[
@@ -50,7 +45,6 @@ def main_menu():
             sys.exit() 
 
 
-    # PHASE 2: MAIN APPLICATION LOOP
     print(f"\n[*] Loading tools...\n")
     
     while True:
@@ -81,7 +75,6 @@ def main_menu():
             PW_Generator.password_generator()
 
         elif choice == '3':
-            # Sub-menu for encryption
             enc_type = inquirer.select(
                 message="Choose encryption level:",
                 choices=[
@@ -95,9 +88,7 @@ def main_menu():
                 print("Minimum encryption selected.")
                 Action_Hist.push_hist('[*] Selected minimum encryption/decryption.')
                 
-                # InquirerPy Confirm (Yes/No prompt)
                 if inquirer.confirm(message="Do you want to encrypt a file?").execute():
-                    # InquirerPy Text Prompts
                     text = inquirer.text(message="Enter the text to encrypt:").execute()
                     encrypted_file = inquirer.filepath(message="Enter the output .txt filename:").execute()
                     encryption_key_file = inquirer.filepath(message="Enter the output encryption key filename:").execute()
@@ -134,20 +125,18 @@ def main_menu():
         elif choice == '5':
             print("Loading Graphs...")
             Action_Hist.push_hist('[*] Opened Graphs.')
-            # Graph.your_function_name_here()
 
         elif choice == '6':
             print("Logging out...")
             Action_Hist.push_hist(f'[*] User logged out (UID: {UID}).')
             UID = None
-            break # Breaks out of main loop, returning to auth loop in main()
+            break
 
         elif choice == '7':
             print("Exiting the program...")
             Action_Hist.push_hist('[*] Program exited from main menu.')
             sys.exit()
 
-# Start the program
 if __name__ == "__main__":
-    while True: # Added an outer loop so logging out fully resets the program
+    while True:
         main_menu()

@@ -1,5 +1,7 @@
 from Functions.Action_Hist import push_hist
 
+# These are placeholders for the password vault. They just log that they were opened.
+
 def add():
     push_hist('[*] Password manager add() was called.')
     pass
