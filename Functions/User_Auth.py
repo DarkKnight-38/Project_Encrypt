@@ -3,7 +3,7 @@ import os
 import random
 import pwinput
 
-def login():#Raphael
+def login():
    from Main_UI import main_menu
    print("\n--- USER LOGIN ---")
    username = input('Enter your username: ').strip()
@@ -20,7 +20,7 @@ def login():#Raphael
    return main_menu()
 
 
-def register():  # Raphael
+def register():
     from Main_UI import main_menu
     print("\n--- USER REGISTRATION ---")
     username = input('Enter a username: ').strip()
@@ -36,7 +36,7 @@ def register():  # Raphael
         with open('Data\\UserData\\user_data.csv', 'r', newline='') as g:
             data = csv.reader(g)
             for row in data:
-                if row:  # Ensure the row isn't blank
+                if row:
                     existing_users.append(row[0])
                    
     if username in existing_users:
@@ -71,5 +71,5 @@ def register():  # Raphael
        
     print('[*] User registered successfully!')
 
-def clear_user_data():#Sasank
+def clear_user_data():
     pass
