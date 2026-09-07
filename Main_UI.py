@@ -16,7 +16,7 @@ def main_menu():
 
     while UID is None:
         print("\n" + "="*45)
-        print("  [purple]VantaCrypt[/purple]  ")
+        print("  [purple4]VantaCrypt[/purple4]  ")
         print("="*45 + "\n")
         
         auth_choice = inquirer.select(
