@@ -15,9 +15,9 @@ def main_menu():
     UID = None
 
     while UID is None:
-        print("\n" + "="*45)
-        print("  [red]Welcome to the Password Management System[/red]  ")
-        print("="*45 + "\n")
+        print("\n" + "="*29)
+        print("  [purple4]Welcome to the VantaCrypt[/purple4]  ")
+        print("="*29 + "\n")
         
         auth_choice = inquirer.select(
             message="Please select an option:",

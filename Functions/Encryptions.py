@@ -3,7 +3,7 @@ import os
 import hashlib
 import pickle
 import random
-def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
+def min_encrypt(encrypted_file, encryption_key_file, text, uid):
     encrypted_file=str(encrypted_file)+'.txt'
     encryption_key_file=str(encryption_key_file)+'.dat'
     keys=[]
@@ -42,7 +42,7 @@ def min_encrypt(encrypted_file, encryption_key_file, text, uid):#Sasank
     print(final_output_2) 
     print()
 
-def inter_encrypt():#Sasank
+def inter_encrypt():
     pass
 def max_encrypt(text, encrypted_file, encryption_key_file, UID):
     encrypted_file=str(encrypted_file)+'.txt'
