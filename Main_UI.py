@@ -1,6 +1,7 @@
 import sys
 from InquirerPy import inquirer
 from rich import print
+import time
 
 import Functions.Action_Hist as Action_Hist
 import Functions.Encryptions as Encryptions
@@ -13,7 +14,7 @@ import Functions.User_Auth as User_Auth
 
 def main_menu():
     UID = None
-
+    password = None
     while UID is None:
         print("\n" + "="*29)
         print("  [purple4]Welcome to the VantaCrypt[/purple4]  ")
@@ -35,10 +36,11 @@ def main_menu():
                 pass
                 
         elif auth_choice == '2':
-            CurrentUID = User_Auth.login()
+            CurrentUID, password = User_Auth.login()
             if CurrentUID is not False and CurrentUID is not None:
                 UID = CurrentUID
-                
+                password = password
+
         elif auth_choice == '3':
             print("Exiting program...")
             Action_Hist.push_hist('[*] Program exited from authentication menu.')
@@ -48,6 +50,8 @@ def main_menu():
     print(f"\n[*] Loading tools...\n")
     
     while True:
+        print()
+        time.sleep(1)
         choice = inquirer.select(
             message="--- MAIN MENU --- What would you like to do?",
             choices=[
@@ -56,8 +60,9 @@ def main_menu():
                 {"name": "Encryption/Decryption", "value": "3"},
                 {"name": "Action History", "value": "4"},
                 {"name": "Graphs", "value": "5"},
-                {"name": "Logout", "value": "6"},
-                {"name": "Exit", "value": "7"}
+                {"name": "Password Manager", "value": "6"},
+                {"name": "Logout", "value": "7"},
+                {"name": "Exit", "value": "8"}
             ]
         ).execute()
 
@@ -127,12 +132,38 @@ def main_menu():
             Action_Hist.push_hist('[*] Opened Graphs.')
 
         elif choice == '6':
+            print("Loading Password Manager...")
+            Action_Hist.push_hist('[*] Opened Password Manager.')
+            from Functions import PW_Manager
+            while True:
+                pm_choice = inquirer.select(
+                    message="Password Manager - Choose an option:",
+                    choices=[
+                        {"name": "Add Entry", "value": "1"},
+                        {"name": "Remove Entry", "value": "2"},
+                        {"name": "Edit Entry", "value": "3"},
+                        {"name": "View Entries", "value": "4"},
+                        {"name": "Back to Main Menu", "value": "5"}
+                    ]
+                ).execute()
+
+                if pm_choice == '1':
+                    PW_Manager.add(UID)
+                elif pm_choice == '2':
+                    PW_Manager.remove(UID,password)
+                elif pm_choice == '3':
+                    PW_Manager.edit(UID,password)
+                elif pm_choice == '4':
+                    PW_Manager.view(UID,password)
+                elif pm_choice == '5':
+                    break
+        elif choice == '7':
             print("Logging out...")
             Action_Hist.push_hist(f'[*] User logged out (UID: {UID}).')
             UID = None
             break
 
-        elif choice == '7':
+        elif choice == '8':
             print("Exiting the program...")
             Action_Hist.push_hist('[*] Program exited from main menu.')
             sys.exit()

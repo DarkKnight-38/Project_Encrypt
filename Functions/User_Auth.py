@@ -15,7 +15,7 @@ def login():
        if row and row[0] == username and row[1] == password:
            print(f"Logging in as {username}...")
            print('[*] Login successful!')
-           return row[2]
+           return row[2], row[1]
    print('[!] Invalid username or password. Login failed.')
    return main_menu()
 
@@ -36,7 +36,7 @@ def register():
         with open('Data\\UserData\\user_data.csv', 'r', newline='') as g:
             data = csv.reader(g)
             for row in data:
-                if row:
+                if row:  # Ensure the row isn't blank
                     existing_users.append(row[0])
                    
     if username in existing_users:
@@ -58,6 +58,11 @@ def register():
         return main_menu()
 
     existing_ids = []
+    f=open('Data\\UserData\\user_data.csv', 'r', newline='')
+    for row in csv.reader(f):
+        if row:  # Ensure the row isn't blank
+            existing_ids.append(row[2])
+    f.close()
     while True:
         unique_id = random.randint(10000000, 99999999)
         if unique_id not in existing_ids:
@@ -70,6 +75,3 @@ def register():
         writer.writerow([username, password, unique_id])
        
     print('[*] User registered successfully!')
-
-def clear_user_data():
-    pass
