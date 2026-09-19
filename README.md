@@ -1,165 +1,97 @@
 # 🔐 VantaCrypt — Security Suite
 
-> **A modular, terminal-based Python security suite for encryption, password security, authentication, analytics, and more.**
+> **A modular, terminal-based Python security suite for encryption, password security, authentication, analytics, and credential management.**
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 ![Platform](https://img.shields.io/badge/Platform-Terminal-lightgrey)
 
-VantaCrypt is a Python-based security toolkit designed to bring multiple security utilities together under one terminal application.
+VantaCrypt is a Python-based security toolkit designed to bring multiple security utilities together under a unified, interactive terminal application.
 
-The project started as an exploration of encryption and authentication algorithms and is gradually evolving into a broader **personal security suite** containing encryption tools, password utilities, account management, activity tracking, data visualization, and other security-focused features.
-
-> ⚠️ **This project is currently under active development.** Some features are complete, while others are planned or being implemented.
+The project began as an exploration of encryption and authentication algorithms and has evolved into a **personal security suite** containing encryption tools, password evaluation and generation utilities, credential vault management, session tracking, and data visualization.
 
 ---
 
 ## ✨ Features
 
-### 🔒 Encryption
+### 🔒 Encryption & Decryption
 
-VantaCrypt currently includes custom encryption and decryption systems.
+Custom multi-tiered encryption and integrity verification systems:
 
-- **XOR-based encryption**
-- SHA-256 integrity verification
-- Per-user encryption watermarking
-- Encryption key management
-- User-specific decryption protection
-- Planned Caesar Cipher
-- Planned Vigenère Cipher
+- **Maximum Encryption (XOR Stream Cipher)**: Cryptographically secure key stream generated via `secrets.randbelow(256)`, hex-encoded ciphertext, SHA-256 cryptographic signature, and owner UID watermarking.
+- **Minimum Encryption (Shift Cipher)**: Variable per-character shift cipher with user authorization checking.
+- **Integrity Verification**: Automatic SHA-256 hash comparison during decryption to detect any data tampering.
+- **Access Control**: Watermarked Unique ID (UID) verification prevents unauthorized users from decrypting sensitive files.
+- **Planned Ciphers**: Intermediate Vigenère cipher in development.
 
 ---
 
 ### 🔑 Authentication
 
-User authentication provides the foundation for protecting user-specific data.
+Secure, session-based user authentication:
 
-- User registration
-- User login
-- Unique User IDs
-- Password confirmation
-- Failed-attempt handling
-- Planned logout system
-- Planned user-data management
+- User registration and login with masked input (`pwinput`).
+- Automated 8-digit unique ID (`UID`) generation.
+- Password confirmation and credential validation.
+- Auto-initialization of user storage (`Data/UserData/user_data.csv`).
+- Clean session logout and re-authentication support.
 
 ---
 
 ### 🛡️ Password Security
 
-A collection of tools designed to help users create and evaluate stronger passwords.
+A collection of utilities designed to evaluate, generate, and store secure credentials.
 
-#### Password Strength Tester
+#### 1. Password Strength Tester
+Evaluates passwords against 5 security criteria with actionable improvement suggestions:
+- Length ($\ge 8$ characters)
+- Uppercase letters
+- Lowercase letters
+- Numerical digits
+- Special symbols
 
-Checks passwords against multiple criteria:
+#### 2. Password Generator
+Generates cryptographically random passwords tailored to user specifications:
+- Configurable length (8 to 512 characters) with numeric input validation.
+- Optional character sets (lowercase, uppercase, numbers, symbols).
+- Seamless integration with the Password Manager for one-step credential storage.
 
-- Minimum length
-- Uppercase characters
-- Lowercase characters
-- Numbers
-- Special characters
-- Strength score
-- Suggestions for improving weak passwords
-
-#### Password Generator — Coming Soon
-
-A dedicated password generator is planned with options for:
-
-- Custom password length
-- Uppercase characters
-- Lowercase characters
-- Numbers
-- Special characters
-- Randomized secure passwords
-
----
-
-### 🔐 Password Manager — Coming Soon
-
-A secure password-management system is planned for storing and managing account credentials.
-
-Planned functionality:
-
-- Add credentials
-- View saved credentials
-- Edit credentials
-- Remove credentials
-- Website/account organization
-- Password generation
-- Encrypted credential storage
-- Authentication before accessing stored passwords
-
-> The goal is to keep credentials encrypted rather than leaving a beautiful little collection of passwords sitting in plaintext waiting for disaster.
+#### 3. Password Manager (Vault)
+An authentication-gated credential manager storing account information per user UID:
+- **Add**: Store website, username, password (manual or generated), and notes.
+- **View**: Display saved credentials after password verification.
+- **Edit**: Update credentials and notes for existing website entries.
+- **Remove**: Securely delete entries from the vault.
+- **Safe Storage**: Multi-record serialized vault files (`Data/PWManagerData/password_vault_<UID>.dat`) with corruption and EOF recovery.
 
 ---
 
-### 📊 Graph & Analytics — Coming Soon
+### 📜 Action History
 
-VantaCryptwill include data visualization and analytics for security-related information.
-
-Planned functionality:
-
-- Password-strength visualization
-- Security statistics
-- User activity graphs
-- Historical data analysis
-- Matplotlib-based visualizations
+In-memory session audit logging that tracks all operations performed in the application:
+- Logs authentication events, tool launches, encryption tasks, and vault interactions.
+- Formatted chronological history viewer with empty state awareness.
 
 ---
 
-### 📜 Action History — Coming Soon
+### 📊 Graph & Analytics — In Development
 
-A session-based action history system will keep track of operations performed within the application.
-
-Planned functionality:
-
-- Record user actions
-- Push actions into history
-- Pop recent actions
-- View session history
-- LIFO stack-based implementation
-
-Example:
-
-```text
-[22:14:03] User logged in
-[22:14:18] Password strength tested
-[22:15:02] File encrypted
-[22:15:17] Password generated
-```
+Visual data analytics for security patterns and activity tracking:
+- Password strength trend graphs.
+- Historical user activity visualization.
+- Matplotlib-based dashboard.
 
 ---
 
-## 🧩 Planned Architecture
+### 🛡️ Crash Protection & Error Handling
 
-VantaCrypt is designed to remain modular so that individual security systems can be developed independently.
-
-```text
-VantaCrypt
-│
-├── 🔒 Encryption
-│   ├── XOR Encryption
-│   ├── Caesar Cipher
-│   └── Vigenère Cipher
-│
-├── 🔑 Authentication
-│   ├── Registration
-│   ├── Login
-│   └── User Management
-│
-├── 🛡️ Password Security
-│   ├── Password Strength
-│   ├── Password Generator
-│   └── Password Manager
-│
-├── 📜 Activity
-│   └── Action History
-│
-├── 📊 Analytics
-│   └── Graphs & Visualization
-│
-└── 🖥️ Terminal Interface
-    └── Main Menu
-```
+Engineered for stability and clean user interaction:
+- **Input Validation**: Re-prompts on invalid numerical inputs (`ValueError`) without crashing.
+- **Missing File Auto-Creation**: Creates required folders and CSV headers on demand.
+- **Corrupt File Safeguards**: Catches corrupt pickle payloads, non-hex ciphertext, and truncated files gracefully.
+- **Terminal Compatibility**: Uses ASCII-safe indicators to prevent Windows terminal `UnicodeEncodeError` (`cp1252`).
+- **Signal Handling**: Gracefully catches `Ctrl+C` (`KeyboardInterrupt`) and `EOFError` across all menus.
+- **Global Exception Boundary**: Catches unexpected tool exceptions in the main loop to preserve the active session.
 
 ---
 
@@ -167,52 +99,28 @@ VantaCrypt
 
 | Feature | Status |
 |---|:---:|
-| XOR Encryption | ✅ Complete |
-| XOR Decryption | ✅ Complete |
-| SHA-256 Integrity Checking | ✅ Complete |
-| User Registration | ✅ Complete |
-| User Login | ✅ Complete |
+| XOR Encryption (Maximum) | ✅ Complete |
+| XOR Decryption & SHA-256 Verification | ✅ Complete |
+| Shift Cipher (Minimum) | ✅ Complete |
+| User Registration & Login | ✅ Complete |
 | Password Strength Tester | ✅ Complete |
-| Caesar Cipher | ✅ Complete |
-| Main Menu | 🚧 In Development |
-| Action History | 🚧 In Development |
-| Vigenère Cipher | 🚧 Planned |
-| Password Generator | 🚧 Planned |
-| Password Manager | 🚧 Planned |
-| Graph & Analytics | 🚧 Planned |
-| Logout | 🚧 Planned |
-| User Data Management | 🚧 Planned |
+| Password Generator | ✅ Complete |
+| Password Manager (Add, View, Edit, Remove) | ✅ Complete |
+| Action History Session Logging | ✅ Complete |
+| Interactive Terminal UI (`InquirerPy` + `rich`) | ✅ Complete |
+| Robust Error Handling & Crash Prevention | ✅ Complete |
+| User Logout | ✅ Complete |
+| Intermediate Encryption (Vigenère) | 🚧 Planned |
+| Graph & Analytics (Matplotlib) | 🚧 In Development |
 
 ---
 
 ## 🛠️ Technologies
 
-VantaCrypt is built primarily with Python and focuses on implementing security concepts using Python's standard libraries and selected third-party modules.
-
-### Core
-
-- Python 3
-- File I/O
-- CSV
-- Pickle
-- Data structures
-- Modular programming
-
-### Security
-
-- `hashlib`
-- `secrets`
-- Custom encryption algorithms
-- SHA-256 hashing
-
-### Visualization
-
-- Matplotlib *(planned/being implemented)*
-
-### Terminal Interface
-
-- `pwinput`
-- Terminal-based menus and interaction
+- **Language**: Python 3.x
+- **CLI & Formatting**: [InquirerPy](https://github.com/kazhala/InquirerPy), [Rich](https://github.com/Textualize/rich)
+- **Input Security**: [pwinput](https://github.com/asweigart/pwinput)
+- **Standard Libraries**: `secrets`, `hashlib`, `pickle`, `csv`, `os`, `random`, `string`
 
 ---
 
@@ -221,46 +129,51 @@ VantaCrypt is built primarily with Python and focuses on implementing security c
 ```text
 Project_Encrypt/
 │
-├── Main_UI.py
+├── Main_UI.py                      # Interactive CLI entry point and menu router
+├── requirements.txt                # Python dependencies
 │
 ├── Functions/
-│   ├── Encryptions.py
-│   ├── Decryption.py
-│   ├── PW_Strength.py
-│   ├── PW_Generator.py
-│   ├── Graph.py
-│   ├── Action_Hist.py
-│   └── User_Auth.py
+│   ├── User_Auth.py                # Registration and login logic
+│   ├── Encryptions.py              # Shift and XOR stream encryption
+│   ├── Decryption.py               # Decryption and SHA-256 verification
+│   ├── PW_Strength.py              # Password evaluation engine
+│   ├── PW_Generator.py             # Random password generator
+│   ├── PW_Manager.py               # Encrypted vault CRUD operations
+│   ├── Action_Hist.py              # Session audit logger
+│   └── Graph.py                    # Analytics stub
 │
 ├── Data/
-│   └── UserData/
-│       └── user_data.csv
+│   ├── UserData/
+│   │   └── user_data.csv           # Registered users and assigned UIDs
+│   └── PWManagerData/
+│       └── password_vault_<UID>.dat # User credential vaults
 │
 └── README.md
 ```
-
-The structure will evolve as additional modules such as the password manager and analytics systems are implemented.
 
 ---
 
 ## 🚀 Getting Started
 
-### Requirements
+### Prerequisites
 
-- Python 3.x
-- `pwinput`
-- `matplotlib`
+- Python 3.8 or newer
+- `pip` package manager
 
 ### Installation
 
-```bash
-git clone https://github.com/DarkKnight-38/Project_Encrypt.git
-cd Project_Encrypt
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/DarkKnight-38/Project_Encrypt.git
+   cd Project_Encrypt
+   ```
 
-pip install pwinput matplotlib
-```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Run
+### Running the Application
 
 ```bash
 python Main_UI.py
@@ -268,63 +181,14 @@ python Main_UI.py
 
 ---
 
-## 🔬 Example
-
-### Encrypting a message
-
-```python
-from Functions.Encryptions import max_encrypt
-from Functions.Decryption import max_decrypt
-
-uid = 12345678
-
-max_encrypt(
-    "Hello World",
-    "cipher.txt",
-    "keys.dat",
-    uid
-)
-
-max_decrypt(
-    "cipher.txt",
-    "keys.dat",
-    uid
-)
-```
-
----
-
-
 ## ⚠️ Security Notice
 
-VantaCrypt is primarily a **learning and development project**.
+VantaCrypt is developed primarily as an **educational and experimental security suite**.
 
-Some components currently use approaches that are not appropriate for production security systems. In particular:
-
-- Password storage requires proper password hashing.
-- Pickle files should never be loaded from untrusted sources.
-- Custom cryptographic algorithms should not be considered replacements for established cryptographic libraries.
-- Encryption key management is still under development.
-
-Do **not** use the current development version to protect highly sensitive or critical information.
-
----
-
-## 🎯 Project Goals
-
-The long-term goal of VantaCrypt is to turn a collection of individual Python security experiments into a unified security toolkit.
-
-The project aims to explore:
-
-- Cryptography
-- Authentication
-- Password security
-- Secure storage
-- Data structures
-- File handling
-- Data visualization
-- Modular software architecture
-- Security best practices
+While algorithms use Python's cryptographically secure `secrets` library and SHA-256 integrity verification:
+- Password credentials in `user_data.csv` should be hashed with a slow KDF (e.g., bcrypt/Argon2) before production deployment.
+- Deserialization with `pickle` should only be conducted on trusted local files.
+- Do not use this tool as a primary replacement for audited enterprise password managers.
 
 ---
 
@@ -337,8 +201,4 @@ The project aims to explore:
 
 ## 📌 Status
 
-**VantaCrypt is actively being developed.**
-
-New security utilities, management tools, analytics features, and improvements are planned for future releases.
-
-> *Break the code. Secure the data.* 🔐
+*Active Development — Break the code. Secure the data.* 🔐
