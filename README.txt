@@ -4,7 +4,7 @@ VANTACRYPT -- TERMINAL SECURITY SUITE
 VantaCrypt is an educational, modular Python terminal security suite
 featuring user authentication, password strength analysis, password
 generation, credential vault management, terminal-based activity charts,
-and multi-tiered file encryption (Shift, Vigenere, and XOR Stream ciphers).
+and text-to-file encryption demonstrations (Shift, Vigenere, and XOR).
 
 
 REQUIREMENTS
@@ -41,7 +41,7 @@ WINDOWS SETUP (POWERSHELL / CMD)
        .\.venv\Scripts\python.exe VantaCrypt.py
 
 
-RUNNING VANTA CRYPT AGAIN
+RUNNING VANTACRYPT AGAIN
 -------------------------
 After initial setup, open a terminal in the project directory and run:
 
@@ -51,9 +51,8 @@ If dependencies are already installed in your system Python:
 
     python VantaCrypt.py
 
-Alternative Launchers:
-- python Main.py       (Direct application controller)
-- python Main_UI.py    (Compatibility launcher redirecting to Main.py)
+VantaCrypt.py calls Main.main_menu(). Main.py contains the controller;
+ running Main.py directly does not start the application.
 
 
 MACOS OR LINUX SETUP
@@ -81,9 +80,24 @@ WHAT IS INCLUDED
 4. Password Vault: Add, view, edit, and remove website credentials with password lock.
 5. Minimum Cipher: Per-character random shift cipher with UID authorization.
 6. Intermediate Cipher: Polyalphabetic Vigenere cipher using a custom keyword.
-7. Maximum Cipher: Cryptographic XOR stream cipher with SHA-256 integrity check.
+7. Maximum Cipher: Educational XOR cipher with a SHA-256 checksum.
 8. Session Action History: Chronological in-memory activity audit table.
 9. Analytical Graph: Terminal horizontal bar chart of session events via plotext.
+
+
+CIPHER WORKFLOW AND STORAGE
+--------------------------
+- Register an account, then log in to access the main tools.
+- Choose a cipher mode and enter text to encrypt, then supply output names.
+- Missing .txt (ciphertext) and .dat (key) extensions are appended.
+- Existing output files are overwritten after a warning, without confirmation.
+- Decrypt using both files, the same mode, and the account that encrypted them.
+- Recovered text is displayed in the terminal, not saved to a new file.
+- Account data: Data/UserData/user_data.csv
+- Per-user vault: Data/PWManagerData/password_vault_<UID>.dat
+- Storage folders are created as needed relative to the working directory.
+- History and charts cover the current process and clear on exit. Chart counts
+  include tool opens; they do not represent only completed operations.
 
 
 TROUBLESHOOTING
@@ -94,7 +108,7 @@ TROUBLESHOOTING
 
 - "No module named InquirerPy / rich / plotext":
   Install dependencies into your active environment using:
-      pip install -r requirements.txt
+      .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 
 - Relative paths and files missing:
   Always execute commands from the project root directory so relative
@@ -110,27 +124,22 @@ SECURITY NOTICE
 VantaCrypt is developed for educational and experimental purposes.
 Credentials and vault entries are stored unencrypted at rest.
 Do not use this application to store real-world sensitive passwords.
+- Vault and cipher key files use pickle. Loading a malicious file can execute
+  code, so only load trusted files. Key files are loaded before the UID check.
+- UID matching is an application check, not cryptographic access control.
+- Maximum mode's stored SHA-256 digest is an unkeyed checksum, not a digital
+  signature or authenticated protection against tampering.
+- The password generator uses random.choice, not cryptographic randomness.
+  Selected character types form a pool; each type is not guaranteed to appear.
+- The strength checker is a five-rule complexity checklist, not an entropy test.
+- Maximum mode supports only code points 0-255. Emoji and many Unicode
+  characters can raise an error. Minimum mode can produce control characters
+  or invalid code points. Use ASCII A-Z keywords for Intermediate mode.
+- Viewing, editing, and removing non-empty vault records require the account
+  password, but this does not encrypt the stored data.
 
 
 CONTRIBUTORS
 ------------
 - Sasank
 - Raphael
-
-- Terminal display issues:
-  Use a modern terminal such as Windows Terminal, PowerShell 7+, or
-  standard Linux/macOS terminals with UTF-8 support enabled.
-
-
-SECURITY NOTICE
----------------
-VantaCrypt is developed for educational and experimental purposes.
-Credentials and vault entries are stored unencrypted at rest.
-Do not use this application to store real-world sensitive passwords.
-
-
-CONTRIBUTORS
-------------
-- Sasank
-- Raphael
-

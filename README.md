@@ -1,6 +1,6 @@
 # VantaCrypt — Terminal Security Suite
 
-VantaCrypt is an educational, modular Python security application featuring password auditing, cryptographically random password generation, local credential vault management, terminal data visualizations, and multi-tier encryption experiments. Its interface combines modern Rich panels and tables with interactive InquirerPy arrow-key navigation.
+VantaCrypt is an educational, modular Python security application featuring password auditing, configurable random password generation, local credential vault management, terminal data visualizations, and multi-tier encryption experiments. Its interface combines modern Rich panels and tables with interactive InquirerPy arrow-key navigation.
 
 > ⚠️ **Security Notice:** VantaCrypt is developed primarily for educational exploration and local experimentation. Account passwords and vault records are currently stored without encryption at rest. Do not use this tool to protect production or sensitive credentials.
 
@@ -20,7 +20,7 @@ VantaCrypt is an educational, modular Python security application featuring pass
    cd path\to\Project_Encrypt
    ```
 
-2. Create and activate a virtual environment (recommended):
+2. Create a virtual environment and install dependencies (activation is not required):
    ```powershell
    python -m venv .venv
    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
@@ -33,14 +33,21 @@ VantaCrypt is an educational, modular Python security application featuring pass
 
 *(If dependencies are already installed in your active Python environment, run `python VantaCrypt.py`).*
 
-### Launchers
+### Launcher and working directory
 
-VantaCrypt supports multiple entry points for flexibility:
-- **`VantaCrypt.py`** *(Primary Launcher)*: Starts the application via `Main.main_menu()`.
-- **`Main.py`**: Direct controller file with interactive loops and tool routing.
-- **`Main_UI.py`**: Backwards-compatible launcher script redirecting to `Main.py`.
+Run `python VantaCrypt.py` to start the application. It calls `Main.main_menu()`;
+`Main.py` contains the controller but does not launch the menu when run directly.
 
-On macOS/Linux, use `python3 -m venv .venv` and `.venv/bin/python VantaCrypt.py`. All storage paths are relative to the project root directory.
+On macOS/Linux, run these commands from the project directory:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python VantaCrypt.py
+```
+
+Run from the project directory consistently: data and relative cipher paths resolve
+against the current working directory. Storage folders are created as needed.
 
 ---
 
@@ -65,12 +72,12 @@ On macOS/Linux, use `python3 -m venv .venv` and `.venv/bin/python VantaCrypt.py`
 | **Authentication** | `Functions/User_Auth.py` | CSV-backed account storage (`user_data.csv`), password confirmation, automatic 8-digit UID generation, and session login/logout. |
 | **Password Strength Audit** | `Functions/PW_Strength.py` | 5-rule complexity analysis (length $\ge 8$, uppercase, lowercase, numbers, special symbols) with visual meter and tailored hardening tips. |
 | **Password Generator** | `Functions/PW_Generator.py` | Generates randomized passwords (length 8–128, default 16) with configurable character categories (lowercase, uppercase, digits, symbols). |
-| **Credential Vault** | `Functions/PW_Manager.py` | Full credential lifecycle: **Add**, **View**, **Edit**, and **Remove** records. Non-empty vault viewing and edits require master account password authentication. |
+| **Credential Vault** | `Functions/PW_Manager.py` | Full credential lifecycle: **Add**, **View**, **Edit**, and **Remove** records. Viewing, editing, and removing records in a non-empty vault require the account password. |
 | **Minimum Cipher** | `Functions/Encryption.py`<br>`Functions/Decryption.py` | Per-character dynamic shift cipher (range -20 to 20); outputs ciphertext `.txt` and pickled `.dat` key payload watermarked with the user's UID. |
 | **Intermediate Cipher** | `Functions/Encryption.py`<br>`Functions/Decryption.py` | Polyalphabetic **Vigenère cipher** using a custom keyword; validates alphabetic characters and enforces UID decryption authorization. |
-| **Maximum Cipher** | `Functions/Encryption.py`<br>`Functions/Decryption.py` | Cryptographic stream cipher: per-character XOR via `secrets.randbelow(256)`, hex-encoded ciphertext, and SHA-256 integrity verification. |
+| **Maximum Cipher** | `Functions/Encryption.py`<br>`Functions/Decryption.py` | Educational XOR cipher: per-character XOR via `secrets.randbelow(256)`, hex-encoded ciphertext, and SHA-256 integrity verification. |
 | **Session Action History** | `Functions/Action_Hist.py` | Chronological in-memory audit log of session events displayed in a formatted Rich table with color-coded status chips. |
-| **Analytical Graph** | `Functions/Graphs.py` | Real-time terminal horizontal bar chart powered by `plotext`, grouping session activities by category (Vault, Ciphers, Auth, History). |
+| **Analytical Graph** | `Functions/Graphs.py` | Terminal horizontal bar chart powered by `plotext`, grouping recorded events by category. Counts include tool opens and are not counts of completed operations. |
 
 ---
 
@@ -80,7 +87,9 @@ Encryption operations generate two paired output files:
 1. **Ciphertext File (`.txt`):** Stores shifted characters, Vigenère transformed characters, or hex-encoded XOR bytes.
 2. **Key File (`.dat`):** A pickled binary payload containing the decryption keys/shifts/keywords and the owner's `UID`. Maximum mode also embeds a SHA-256 hash of the original plaintext.
 
-Decryption requires both files and verifies that the logged-in user's `UID` matches the `uniqueid` recorded in the key file. Maximum decryption computes a fresh SHA-256 hash and compares it against the signature to detect file tampering.
+Decryption requires both files and checks the logged-in user's `UID` against the `uniqueid` in the key file. Recovered text is displayed in the terminal; it is not saved to a new file. Maximum mode compares the recovered text's SHA-256 hash with the stored digest. This is an unkeyed checksum, not a digital signature or authenticated tamper protection.
+
+Enter text at the encryption prompt, then choose ciphertext and key filenames. Missing `.txt` and `.dat` extensions are appended automatically. Existing output files are overwritten after a warning, without confirmation. Use the same cipher mode and account when decrypting.
 
 ---
 
@@ -90,7 +99,6 @@ Decryption requires both files and verifies that the logged-in user's `UID` matc
 Project_Encrypt/
 ├── VantaCrypt.py           # Primary application launcher
 ├── Main.py                 # Core controller, interactive menus & routing
-├── Main_UI.py              # Compatibility entry point
 ├── UI.py                   # Rich presentation layer & InquirerPy prompts
 ├── requirements.txt        # Third-party dependencies
 ├── README.md               # Project documentation
@@ -103,10 +111,8 @@ Project_Encrypt/
 │   ├── PW_Generator.py     # Random password generation
 │   ├── PW_Manager.py       # Credential vault CRUD operations
 │   ├── Encryption.py       # Minimum, Intermediate (Vigenère), & Maximum encryption
-│   ├── Encryptions.py      # Compatibility shim re-exporting Encryption
 │   ├── Decryption.py       # Reverse transformation & SHA-256 integrity check
 │   ├── Graphs.py           # Plotext terminal bar charts
-│   ├── Graph.py            # Compatibility shim re-exporting Graphs
 │   └── Action_Hist.py      # Session audit log
 │
 └── Data/
@@ -128,7 +134,7 @@ Project_Encrypt/
 
 Install all dependencies with:
 ```powershell
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ---
@@ -136,8 +142,12 @@ pip install -r requirements.txt
 ## ⚠️ Known Limitations & Security Notes
 
 - **Unencrypted Storage at Rest:** Account passwords in `user_data.csv` and vault entries in `password_vault_<UID>.dat` are stored unencrypted.
-- **Pickle Security:** Python `pickle` deserialization should only be performed on trusted local files.
+- **Pickle Security:** Vault and key files use `pickle`, which can execute code when loading malicious files. Load only trusted files; the UID check happens after key deserialization.
 - **Educational Cryptography:** Custom shift and XOR ciphers serve as algorithmic demonstrations rather than replacements for standardized cryptographic algorithms (e.g., AES-GCM, ChaCha20-Poly1305).
+- **Password Generation:** The generator uses `random.choice`, not a cryptographic random source. Selected character categories form a shared pool; each category is not guaranteed to appear in a result.
+- **Strength Score:** The five-rule checklist measures character complexity, not entropy or resistance to password attacks.
+- **UID Checks:** UIDs and keys are stored in editable files; the UID match is an application check, not cryptographic access control.
+- **Text Support:** Maximum mode only supports characters with code points 0-255; emoji and many other Unicode characters can raise an error. Minimum mode can produce control characters or invalid code points and is not reliable for arbitrary Unicode. Use ASCII A-Z keywords for Intermediate mode.
 - **Session Scope:** Action History and Analytical Graphs track events during the current running process; logs are cleared when the program exits.
 
 ---
