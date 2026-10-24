@@ -1,4 +1,3 @@
-# Standardize VantaCrypt UI and project documentation.
 import UI
 
 history = []

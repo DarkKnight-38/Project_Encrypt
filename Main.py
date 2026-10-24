@@ -1,12 +1,11 @@
-# Standardize VantaCrypt UI and project documentation.
 import sys
 import os
 
 import UI
 import Functions.Action_Hist as Action_Hist
-import Functions.Encryptions as Encryptions
+import Functions.Encryption as Encryption
 import Functions.Decryption as Decryption
-import Functions.Graph as Graph
+import Functions.Graphs as Graph
 import Functions.PW_Generator as PW_Generator
 import Functions.PW_Strength as PW_Strength
 import Functions.User_Auth as User_Auth
@@ -24,7 +23,7 @@ def encryption_menu(UID):
             [
                 ("1", "🔒 Maximum (XOR Stream + SHA-256)", "Cryptographic stream cipher with SHA-256 integrity"),
                 ("2", "🔤 Minimum (Dynamic Shift)", "Per-character dynamic shift cipher with UID lock"),
-                ("3", "⚙️ Intermediate (Vigenère)", "Polyalphabetic substitution cipher (in development)"),
+                ("3", "⚙️ Intermediate (Vigenère)", "Polyalphabetic substitution cipher with keyword"),
                 ("B", "↩  Back to Main Menu", "Return to main command center")
             ],
             default="1"
@@ -46,7 +45,7 @@ def encryption_menu(UID):
                 if text:
                     txt_file = UI.prompt_filepath("Output ciphertext filename (without extension)")
                     enc_key = UI.prompt_filepath("Output key filename (without extension)")
-                    Encryptions.max_encrypt(text, txt_file, enc_key, UID)
+                    Encryption.max_encrypt(text, txt_file, enc_key, UID)
             elif action == "D":
                 txt_file = UI.prompt_filepath("Ciphertext filename to decrypt")
                 enc_key = UI.prompt_filepath("Key filename")
@@ -69,7 +68,7 @@ def encryption_menu(UID):
                 if text:
                     txt_file = UI.prompt_filepath("Output .txt filename")
                     enc_key = UI.prompt_filepath("Output key .dat filename")
-                    Encryptions.min_encrypt(txt_file, enc_key, text, UID)
+                    Encryption.min_encrypt(txt_file, enc_key, text, UID)
             elif action == "D":
                 txt_file = UI.prompt_filepath("Ciphertext .txt filename to decrypt")
                 enc_key = UI.prompt_filepath("Key .dat filename")
@@ -77,7 +76,26 @@ def encryption_menu(UID):
             UI.prompt_text("Press Enter to continue...")
 
         elif choice == "3":
-            Encryptions.inter_encrypt()
+            UI.header("Intermediate (Vigenère) Encryption / Decryption")
+            action = UI.menu(
+                "Choose Intermediate Cipher Operation",
+                [
+                    ("E", "🔒 Encrypt Text to File", "Apply polyalphabetic Vigenère cipher"),
+                    ("D", "🔓 Decrypt File", "Reverse Vigenère cipher with UID authorization"),
+                    ("B", "↩  Cancel", "Return to cipher options")
+                ],
+                default="E"
+            )
+            if action == "E":
+                text = UI.prompt_text("Enter text to encrypt")
+                if text:
+                    txt_file = UI.prompt_filepath("Output .txt filename")
+                    enc_key = UI.prompt_filepath("Output key .dat filename")
+                    Encryption.inter_encrypt(txt_file, enc_key, text, UID)
+            elif action == "D":
+                txt_file = UI.prompt_filepath("Ciphertext .txt filename to decrypt")
+                enc_key = UI.prompt_filepath("Key .dat filename")
+                Decryption.inter_decrypt(txt_file, enc_key, UID)
             UI.prompt_text("Press Enter to continue...")
 
         elif choice.upper() == "B":
@@ -174,7 +192,7 @@ def main_menu():
                 ("3", "🔒  Encryption & Decryption Suite", "Multi-tiered XOR stream and shift ciphers"),
                 ("4", "🔐  Password Vault Manager", "Secure credential storage, editing, and retrieval"),
                 ("5", "📜  Session Action History", "Review chronological audit trail of all operations"),
-                ("6", "📊  Security Graphs & Analytics", "Interactive statistics and security visualizations"),
+                ("6", "📊  Analytical Graph", "View session activity counts in the terminal"),
                 ("7", "🚪  Logout", "Lock vault and return to the authentication portal"),
                 ("8", "❌  Exit", "Close the security suite")
             ],
@@ -212,8 +230,8 @@ def main_menu():
 
         elif choice == "6":
             UI.clear_screen()
-            UI.header("Security Analytics & Graphs")
-            Action_Hist.push_hist("[*] Viewed Security Analytics.")
+            UI.header("Analytical Graph")
+            Action_Hist.push_hist("[*] Viewed Analytical Graph.")
             Graph.Graph()
             UI.prompt_text("Press Enter to continue...")
 

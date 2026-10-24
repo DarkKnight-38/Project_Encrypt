@@ -1,4 +1,3 @@
-# Standardize VantaCrypt UI and project documentation.
 import os
 import hashlib
 import pickle
@@ -42,9 +41,53 @@ def min_decrypt(encrypted_file, encryption_key_file, uid):
     except Exception as e:
         UI.error(f"Decryption error: {e}")
 
-def inter_decrypt():
+def inter_decrypt(encrypted_file, encryption_key_file, uid):
     UI.header("Intermediate Decryption", "Vigenère polyalphabetic cipher")
-    UI.info("Intermediate Vigenère cipher is currently under active development.")
+    encrypted_file = str(encrypted_file) + ('' if str(encrypted_file).endswith('.txt') else '.txt')
+    encryption_key_file = str(encryption_key_file) + ('' if str(encryption_key_file).endswith('.dat') else '.dat')
+    if not os.path.exists(encrypted_file) or not os.path.exists(encryption_key_file):
+        UI.error("Required encrypted file or key file is missing.")
+        return
+    
+    try:
+        with open(encrypted_file, 'r', encoding='utf-8') as f_txt:
+            ciphertext_string = f_txt.read()
+    
+        with open(encryption_key_file, 'rb') as f_bin:
+            security_payload = pickle.load(f_bin)
+
+        keys = security_payload.get('key') or security_payload.get('keys')
+        if not keys:
+            UI.error("Invalid key file: Cipher key not found in security payload.")
+            return
+
+        keys = str(keys).upper()
+        saved_uid = security_payload.get('uniqueid')
+        
+        if str(uid) != str(saved_uid):
+            UI.error(f"ACCESS DENIED: File is watermarked to UID {saved_uid}. You do not have authorization.")
+            return
+    
+        decrypted_text=''
+        decrypted_chars=[]
+        for i in range(len(ciphertext_string)):
+            if ciphertext_string[i].isalpha() and ciphertext_string[i].isascii():
+                shift = ord(keys[i % len(keys)]) - ord('A')
+                base = ord('A') if ciphertext_string[i].isupper() else ord('a')
+                decrypted_chars.append(chr((ord(ciphertext_string[i]) - base - shift) % 26 + base))
+            else:
+                decrypted_chars.append(ciphertext_string[i])    
+        decrypted_text = "".join(decrypted_chars)
+
+        UI.success("Decryption successful (Intermediate Vigenère Mode)!")
+        UI.console.print(Panel(
+            Text(decrypted_text, style="bold white"),
+            title="[bold success]DECRYPTED PAYLOAD[/bold success]",
+            border_style="success",
+            padding=(1, 2)
+        ))
+    except Exception as e:
+        UI.error(f"Decryption error: {e}")
 
 def max_decrypt(encrypted_file, encryption_key_file, current_uid):
     UI.header("Maximum XOR Stream Decryption", "Verify SHA-256 integrity and decrypt payload")

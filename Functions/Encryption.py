@@ -1,4 +1,3 @@
-# Standardize VantaCrypt UI and project documentation.
 import os
 import secrets
 import hashlib
@@ -41,9 +40,52 @@ def min_encrypt(encrypted_file, encryption_key_file, text, uid):
     except Exception as e:
         UI.error(f"Failed to write encrypted files: {e}")
 
-def inter_encrypt():
+def inter_encrypt(encrypted_file, encryption_key_file, text, uid):
     UI.header("Intermediate Encryption", "Vigenère polyalphabetic cipher")
-    UI.info("Intermediate Vigenère cipher is currently under active development.")
+    if not text:
+        UI.warning("Text to encrypt cannot be empty.")
+        return
+    encrypted_file = str(encrypted_file) + ('' if str(encrypted_file).endswith('.txt') else '.txt')
+    encryption_key_file = str(encryption_key_file) + ('' if str(encryption_key_file).endswith('.dat') else '.dat')
+
+    if os.path.exists(encrypted_file):
+            UI.warning(f"File '{encrypted_file}' already exists and will be overwritten.")
+    if os.path.exists(encryption_key_file):
+        UI.warning(f"Key file '{encryption_key_file}' already exists and will be overwritten.")
+
+    while True:
+        key = UI.prompt_text("Enter Vigenère cipher keyword (letters only)").strip().upper()
+        if not key:
+            UI.warning("Cipher keyword cannot be empty.")
+            continue
+        if not key.isalpha():
+            UI.warning("Cipher keyword must contain letters only (A-Z).")
+            continue
+        break
+
+    encrypted_chars=[]
+
+    for i in range(len(text)):
+        if text[i].isalpha() and text[i].isascii():
+            shift = ord(key[i % len(key)]) - ord('A')
+            base = ord('A') if text[i].isupper() else ord('a')
+            encrypted_chars.append(chr((ord(text[i]) - base + shift) % 26 + base))
+        else:
+            encrypted_chars.append(text[i])
+    encrypted_text = "".join(encrypted_chars)
+
+    try:
+        with open(encrypted_file, "w", encoding="utf-8") as f_txt:
+            f_txt.write(encrypted_text)
+    
+        with open(encryption_key_file, "wb") as f_bin:
+            pickle.dump({"key": key, "keys": key, "uniqueid": uid}, f_bin)
+    
+        UI.success("Data successfully encrypted!")
+        UI.cipher_summary("Encryption", "Intermediate Vigenère Cipher", encrypted_file, encryption_key_file)
+    except Exception as e:
+        UI.error(f"Failed to write encrypted files: {e}")
+        
 
 def max_encrypt(text, encrypted_file, encryption_key_file, UID):
     UI.header("Maximum XOR Stream Encryption", "Cryptographic stream cipher with SHA-256 signature")

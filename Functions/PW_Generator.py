@@ -1,4 +1,3 @@
-# Standardize VantaCrypt UI and project documentation.
 import UI
 from Functions.Action_Hist import push_hist
 import random

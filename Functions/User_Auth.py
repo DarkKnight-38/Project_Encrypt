@@ -1,4 +1,3 @@
-# Standardize VantaCrypt UI and project documentation.
 import os
 import csv
 import random

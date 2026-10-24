@@ -1,4 +1,3 @@
-<!-- Standardize VantaCrypt UI and project documentation. -->
 # VantaCrypt — Terminal Security Suite
 
 VantaCrypt is an educational Python application for password checks, password generation, local credential management, and text-encryption experiments. Its terminal interface uses Rich panels and tables alongside InquirerPy keyboard menus.
@@ -34,7 +33,7 @@ Registration creates `Data/UserData/user_data.csv` and its parent directory when
 - Use Up/Down arrows to move and Enter to choose an option.
 - Register an account, then log in with its username and password.
 - The status strip shows guest/active status, username, UID, action count, and a vault-entry count where supplied.
-- The main menu opens password checks, generation, encryption/decryption, the vault, session history, and the analytics placeholder.
+- The main menu opens password checks, generation, encryption/decryption, the vault, session history, and the Analytical Graph.
 - Back/Cancel options return from submenus. Logout returns to authentication; Exit closes the application.
 - The current implementation clears and redraws screens and displays “Press Enter” pauses after many operations.
 - Prompt wrappers catch Ctrl+C and end-of-input: menus return a Back value, text/secret/path prompts return an empty string, and confirmation prompts return false. This is not a universal application-wide exception handler.
@@ -54,7 +53,7 @@ Registration creates `Data/UserData/user_data.csv` and its parent directory when
 | Maximum cipher | Per-character XOR using values from `secrets.randbelow(256)`; hex ciphertext and a pickle payload containing keys, UID, and a SHA-256 digest |
 | Session history | Numbered, in-memory messages recorded during the current process; no persistent audit-log file |
 | Intermediate cipher | Placeholder message only; Vigenère is not implemented |
-| Graphs/analytics | Placeholder message only; no charts are generated |
+| Analytical Graph | Plotext chart of session activity counts displayed in the terminal |
 
 The password generator samples from the combined selected character pool using `random.choice`. It does **not** guarantee that each selected category appears, and it does **not** use cryptographically secure randomness. The strength checker measures character rules, not entropy, breach exposure, or actual cracking time.
 
@@ -87,7 +86,7 @@ Project_Encrypt/
 │   ├── Encryptions.py      # Shift/XOR demonstrations; intermediate placeholder
 │   ├── Decryption.py      # Reverse transformations and digest check
 │   ├── Action_Hist.py      # In-memory session messages
-│   └── Graph.py            # Analytics placeholder
+│   └── Graphs.py           # Analytical Graph in the terminal
 └── Data/
     ├── UserData/user_data.csv
     └── PWManagerData/password_vault_<UID>.dat
@@ -104,7 +103,7 @@ CSV records contain `Username`, `Password`, and `UniqueID`. Each vault file cont
 
 Pip resolves their transitive dependencies. `csv`, `hashlib`, `os`, `pickle`, `random`, `secrets`, `string`, and `sys` are Python standard-library modules and do not belong in requirements.txt.
 
-`pwinput`, `pyfiglet`, and `matplotlib` are not imported by the current source. Hidden input comes from InquirerPy, the banner is embedded text, and graphs remain a placeholder. The requirements specify minimum versions, not an exact reproducible lockfile.
+`pwinput`, `pyfiglet`, and `matplotlib` are not imported by the current source. Hidden input comes from InquirerPy, the banner is embedded text, and the Analytical Graph uses Plotext. The requirements specify version ranges, not an exact reproducible lockfile.
 
 ## Current limitations
 
