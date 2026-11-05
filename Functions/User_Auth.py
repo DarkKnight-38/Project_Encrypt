@@ -62,6 +62,7 @@ def register():
 
     if username.lower() in existing_users:
         UI.error("User already exists! Please log in instead.")
+        
         return False
 
     password = UI.prompt_secret("Create a master password")

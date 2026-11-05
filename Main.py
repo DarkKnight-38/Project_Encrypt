@@ -21,15 +21,15 @@ def encryption_menu(UID):
         choice = UI.menu(
             "Encryption & Decryption Suite",
             [
-                ("1", "🔒 Maximum (XOR Stream + SHA-256)", "Cryptographic stream cipher with SHA-256 integrity"),
-                ("2", "🔤 Minimum (Dynamic Shift)", "Per-character dynamic shift cipher with UID lock"),
-                ("3", "⚙️ Intermediate (Vigenère)", "Polyalphabetic substitution cipher with keyword"),
+                ("1", "🔤 Minimum (Dynamic Shift)", "Per-character dynamic shift cipher with UID lock"),
+                ("2", "⚙️ Intermediate (Vigenère)", "Polyalphabetic substitution cipher with keyword"),
+                ("3", "🔒 Maximum (XOR Stream + SHA-256)", "Cryptographic stream cipher with SHA-256 integrity"),
                 ("B", "↩  Back to Main Menu", "Return to main command center")
             ],
             default="1"
         )
 
-        if choice == "1":
+        if choice == "3":
             UI.header("Maximum Encryption / Decryption")
             action = UI.menu(
                 "Choose Maximum Cipher Operation",
@@ -52,7 +52,7 @@ def encryption_menu(UID):
                 Decryption.max_decrypt(txt_file, enc_key, UID)
             UI.prompt_text("Press Enter to continue...")
 
-        elif choice == "2":
+        elif choice == "1":
             UI.header("Minimum Encryption / Decryption")
             action = UI.menu(
                 "Choose Minimum Cipher Operation",
@@ -75,7 +75,7 @@ def encryption_menu(UID):
                 Decryption.min_decrypt(txt_file, enc_key, UID)
             UI.prompt_text("Press Enter to continue...")
 
-        elif choice == "3":
+        elif choice == "2":
             UI.header("Intermediate (Vigenère) Encryption / Decryption")
             action = UI.menu(
                 "Choose Intermediate Cipher Operation",
@@ -162,6 +162,8 @@ def main_menu():
             result = User_Auth.register()
             if result:
                 UI.prompt_text("Press Enter to proceed to login...")
+            else:
+                UI.prompt_text("Press Enter to return...")
 
         elif auth_choice == "2":
             UI.header("User Authentication")
@@ -169,6 +171,7 @@ def main_menu():
             if auth_result and auth_result[0] is not None:
                 UID, password = auth_result
                 Action_Hist.push_hist(f"[*] User logged in with UID: {UID}")
+                UI.prompt_text("Press Enter to proceed to login...")
             else:
                 UI.prompt_text("Press Enter to return...")
 
@@ -247,5 +250,3 @@ def main_menu():
             UI.info("Closing VantaCrypt suite. Stay secure!")
             Action_Hist.push_hist("[*] Program exited from main menu.")
             sys.exit(0)
-
-

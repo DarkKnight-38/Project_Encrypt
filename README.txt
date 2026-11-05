@@ -141,5 +141,4 @@ Do not use this application to store real-world sensitive passwords.
 
 CONTRIBUTORS
 ------------
-- Sasank
 - Raphael

@@ -58,7 +58,9 @@ def Graph():
     except ModuleNotFoundError as exc:
         if exc.name != "plotext":
             raise
-        UI.info("Plotext is required. Install the packages in requirements.txt to view charts.")
+        UI.info('Plotext is required. Install plotext<6.0.0 with: pip install "plotext>=5.3.2,<6.0.0"')
+    except AttributeError:
+        UI.error('The installed Plotext version is incompatible. Install plotext<6.0.0 with: pip install "plotext>=5.3.2,<6.0.0"')
 
 
 if __name__ == "__main__":

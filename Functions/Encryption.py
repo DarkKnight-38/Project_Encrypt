@@ -14,10 +14,12 @@ def min_encrypt(encrypted_file, encryption_key_file, text, uid):
     encrypted_file = str(encrypted_file) + ('' if str(encrypted_file).endswith('.txt') else '.txt')
     encryption_key_file = str(encryption_key_file) + ('' if str(encryption_key_file).endswith('.dat') else '.dat')
 
-    if os.path.exists(encrypted_file):
-        UI.warning(f"File '{encrypted_file}' already exists and will be overwritten.")
-    if os.path.exists(encryption_key_file):
-        UI.warning(f"Key file '{encryption_key_file}' already exists and will be overwritten.")
+    for output_file in (encrypted_file, encryption_key_file):
+        if os.path.exists(output_file) and not UI.prompt_confirm(
+            f"File '{output_file}' already exists. Overwrite it?", default=False
+        ):
+            UI.info("Encryption cancelled. No files were changed.")
+            return
 
     keys = []
     encrypted_chars = []
@@ -48,10 +50,12 @@ def inter_encrypt(encrypted_file, encryption_key_file, text, uid):
     encrypted_file = str(encrypted_file) + ('' if str(encrypted_file).endswith('.txt') else '.txt')
     encryption_key_file = str(encryption_key_file) + ('' if str(encryption_key_file).endswith('.dat') else '.dat')
 
-    if os.path.exists(encrypted_file):
-            UI.warning(f"File '{encrypted_file}' already exists and will be overwritten.")
-    if os.path.exists(encryption_key_file):
-        UI.warning(f"Key file '{encryption_key_file}' already exists and will be overwritten.")
+    for output_file in (encrypted_file, encryption_key_file):
+        if os.path.exists(output_file) and not UI.prompt_confirm(
+            f"File '{output_file}' already exists. Overwrite it?", default=False
+        ):
+            UI.info("Encryption cancelled. No files were changed.")
+            return
 
     while True:
         key = UI.prompt_text("Enter Vigenère cipher keyword (letters only)").strip().upper()
@@ -96,10 +100,12 @@ def max_encrypt(text, encrypted_file, encryption_key_file, UID):
     encrypted_file = str(encrypted_file) + ('' if str(encrypted_file).endswith('.txt') else '.txt')
     encryption_key_file = str(encryption_key_file) + ('' if str(encryption_key_file).endswith('.dat') else '.dat')
 
-    if os.path.exists(encrypted_file):
-        UI.warning(f"File '{encrypted_file}' already exists and will be overwritten.")
-    if os.path.exists(encryption_key_file):
-        UI.warning(f"Key file '{encryption_key_file}' already exists and will be overwritten.")
+    for output_file in (encrypted_file, encryption_key_file):
+        if os.path.exists(output_file) and not UI.prompt_confirm(
+            f"File '{output_file}' already exists. Overwrite it?", default=False
+        ):
+            UI.info("Encryption cancelled. No files were changed.")
+            return
 
     text_bytes = text.encode("utf-8")
     og_hash = hashlib.sha256(text_bytes).hexdigest()
